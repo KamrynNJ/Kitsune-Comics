@@ -30,6 +30,7 @@ struct SearchBar: View {
                 Button(action: {
                     self.isEditing = false
                     self.text = ""
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
  
                 }) {
                     Text("Cancel")
@@ -39,6 +40,24 @@ struct SearchBar: View {
                 .animation(.default)
             }
         }
+        .overlay(
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.gray)
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 20)
+         
+                if isEditing {
+                    Button(action: {
+                    },label: {
+                        Image(systemName: "multiply.circle.fill")
+                            .foregroundColor(.gray)
+                            .padding(.trailing, 90)                    }).onTapGesture{
+                        self.text = ""
+                    }
+                }
+            }
+        )
     }
 }
 
@@ -71,10 +90,7 @@ func updateEntity(WebThing: WebThings) {
     var body: some View {
         if (showListScreen){
             VStack{
-//                SearchBar(text: .constant(""))
-//                    .padding(.top, -30)
             NavigationView {
-                
                 List{
                     SearchBar(text: $searchText)
                     ForEach(enities.filter({ searchText.isEmpty ? true : $0.title.contains(searchText) })) {WebThings in
