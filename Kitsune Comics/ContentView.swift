@@ -8,6 +8,40 @@
 import SwiftUI
 import CoreData
 
+struct SearchBar: View {
+    @Binding var text: String
+ 
+    @State private var isEditing = false
+ 
+    var body: some View {
+        HStack {
+ 
+            TextField("Search ...", text: $text)
+                .padding(7)
+                .padding(.horizontal, 25)
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+                .padding(.horizontal, 10)
+                .onTapGesture {
+                    self.isEditing = true
+                }
+ 
+            if isEditing {
+                Button(action: {
+                    self.isEditing = false
+                    self.text = ""
+ 
+                }) {
+                    Text("Cancel")
+                }
+                .padding(.trailing, 10)
+                .transition(.move(edge: .trailing))
+                .animation(.default)
+            }
+        }
+    }
+}
+
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -23,7 +57,7 @@ struct ContentView: View {
     @State var showHomeScreen = false
     @State var showUpdateScreen = false
     @State var showEditScreen = false
-    //@State var idnumpassed=0
+    @State var searchText = ""
     @State var pressed = false
     
 
@@ -37,9 +71,13 @@ func updateEntity(WebThing: WebThings) {
     var body: some View {
         if (showListScreen){
             VStack{
+//                SearchBar(text: .constant(""))
+//                    .padding(.top, -30)
             NavigationView {
-                List {
-                    ForEach(enities) { WebThings in
+                
+                List{
+                    SearchBar(text: $searchText)
+                    ForEach(enities.filter({ searchText.isEmpty ? true : $0.title.contains(searchText) })) {WebThings in
                        HStack {
                            VStack(alignment: .leading) {
                             HStack{
@@ -71,9 +109,6 @@ func updateEntity(WebThing: WebThings) {
                         .buttonStyle(BorderlessButtonStyle())
                        }
                        .frame(height: 100)
-//                        if(pressed){
-//                            var idnum = WebThings.id
-//                        }
                        .sheet(isPresented: $showEditScreen) {
                         EditScreen(webs: WebThings)
                            .environment(\.managedObjectContext, self.viewContext)
