@@ -15,6 +15,13 @@
 		DE8DBB6126E47177000A69C3 /* Kitsune_Comics.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB5F26E47177000A69C3 /* Kitsune_Comics.xcdatamodeld */; };
 		DE8DBB6C26E47178000A69C3 /* Kitsune_ComicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB6B26E47178000A69C3 /* Kitsune_ComicsTests.swift */; };
 		DE8DBB7726E47178000A69C3 /* Kitsune_ComicsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB7626E47178000A69C3 /* Kitsune_ComicsUITests.swift */; };
+		DE8DBB8626E478BB000A69C3 /* WebThings+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8426E478BB000A69C3 /* WebThings+CoreDataClass.swift */; };
+		DE8DBB8726E478BB000A69C3 /* WebThings+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8526E478BB000A69C3 /* WebThings+CoreDataProperties.swift */; };
+		DE8DBB8926E47D6D000A69C3 /* AddEntryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8826E47D6D000A69C3 /* AddEntryScreen.swift */; };
+		DE8DBB8B26E4AE5E000A69C3 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8A26E4AE5E000A69C3 /* HomeScreen.swift */; };
+		DE8DBB8D26E4B17E000A69C3 /* FavScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8C26E4B17E000A69C3 /* FavScreen.swift */; };
+		DE8DBB8F26E4B1C6000A69C3 /* UpdateScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8E26E4B1C6000A69C3 /* UpdateScreen.swift */; };
+		DE8DBB9126E5966B000A69C3 /* EditScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB9026E5966B000A69C3 /* EditScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +56,13 @@
 		DE8DBB7226E47178000A69C3 /* Kitsune ComicsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kitsune ComicsUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE8DBB7626E47178000A69C3 /* Kitsune_ComicsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kitsune_ComicsUITests.swift; sourceTree = "<group>"; };
 		DE8DBB7826E47178000A69C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DE8DBB8426E478BB000A69C3 /* WebThings+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebThings+CoreDataClass.swift"; sourceTree = "<group>"; };
+		DE8DBB8526E478BB000A69C3 /* WebThings+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebThings+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		DE8DBB8826E47D6D000A69C3 /* AddEntryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEntryScreen.swift; sourceTree = "<group>"; };
+		DE8DBB8A26E4AE5E000A69C3 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
+		DE8DBB8C26E4B17E000A69C3 /* FavScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavScreen.swift; sourceTree = "<group>"; };
+		DE8DBB8E26E4B1C6000A69C3 /* UpdateScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateScreen.swift; sourceTree = "<group>"; };
+		DE8DBB9026E5966B000A69C3 /* EditScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +93,8 @@
 		DE8DBB4826E47175000A69C3 = {
 			isa = PBXGroup;
 			children = (
+				DE8DBB8426E478BB000A69C3 /* WebThings+CoreDataClass.swift */,
+				DE8DBB8526E478BB000A69C3 /* WebThings+CoreDataProperties.swift */,
 				DE8DBB5326E47175000A69C3 /* Kitsune Comics */,
 				DE8DBB6A26E47178000A69C3 /* Kitsune ComicsTests */,
 				DE8DBB7526E47178000A69C3 /* Kitsune ComicsUITests */,
@@ -99,8 +115,13 @@
 		DE8DBB5326E47175000A69C3 /* Kitsune Comics */ = {
 			isa = PBXGroup;
 			children = (
+				DE8DBB8E26E4B1C6000A69C3 /* UpdateScreen.swift */,
+				DE8DBB8C26E4B17E000A69C3 /* FavScreen.swift */,
 				DE8DBB5426E47175000A69C3 /* Kitsune_ComicsApp.swift */,
 				DE8DBB5626E47175000A69C3 /* ContentView.swift */,
+				DE8DBB9026E5966B000A69C3 /* EditScreen.swift */,
+				DE8DBB8A26E4AE5E000A69C3 /* HomeScreen.swift */,
+				DE8DBB8826E47D6D000A69C3 /* AddEntryScreen.swift */,
 				DE8DBB5826E47177000A69C3 /* Assets.xcassets */,
 				DE8DBB5D26E47177000A69C3 /* Persistence.swift */,
 				DE8DBB6226E47177000A69C3 /* Info.plist */,
@@ -265,10 +286,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE8DBB8F26E4B1C6000A69C3 /* UpdateScreen.swift in Sources */,
 				DE8DBB5E26E47177000A69C3 /* Persistence.swift in Sources */,
 				DE8DBB5726E47175000A69C3 /* ContentView.swift in Sources */,
+				DE8DBB8926E47D6D000A69C3 /* AddEntryScreen.swift in Sources */,
 				DE8DBB5526E47175000A69C3 /* Kitsune_ComicsApp.swift in Sources */,
+				DE8DBB8B26E4AE5E000A69C3 /* HomeScreen.swift in Sources */,
 				DE8DBB6126E47177000A69C3 /* Kitsune_Comics.xcdatamodeld in Sources */,
+				DE8DBB8626E478BB000A69C3 /* WebThings+CoreDataClass.swift in Sources */,
+				DE8DBB8D26E4B17E000A69C3 /* FavScreen.swift in Sources */,
+				DE8DBB8726E478BB000A69C3 /* WebThings+CoreDataProperties.swift in Sources */,
+				DE8DBB9126E5966B000A69C3 /* EditScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

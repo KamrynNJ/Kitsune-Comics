@@ -14,9 +14,14 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-        }
+                    let newItem = WebThings(context: viewContext)
+                    newItem.title = ""
+                    newItem.id = UUID()
+                    newItem.type = ""
+                    newItem.image_link = ""
+                    newItem.link = ""
+                    newItem.chapter = ""
+                }
         do {
             try viewContext.save()
         } catch {
