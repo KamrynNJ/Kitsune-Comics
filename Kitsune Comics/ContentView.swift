@@ -242,11 +242,6 @@ func updateEntity(WebThing: WebThings) {
                            }
                 }
                     .navigationTitle("List")
-                //Edit screen popup
-//                    .sheet(isPresented: $showEditScreen) {
-//                        EditScreen()
-//                        .environment(\.managedObjectContext, self.viewContext)
-//                        }
                     }
                 HStack{
                     Button(action: {
