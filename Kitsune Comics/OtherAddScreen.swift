@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddEntryScreen: View {
+struct OtherAddScreen: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment (\.presentationMode) var presentationMode
        
@@ -24,11 +24,12 @@ struct AddEntryScreen: View {
     @State var showListScreen = false
     @State var showHomeScreen = false
     @State var showUpdateScreen = false
-    @State var showOtherAddScreen = false
-    
+    @State private var showOtherAddScreen = true
+    @State private var showEasyAddScren = false
+    @State private var hideVisited = false
     
     var body: some View {
-        if(showAddScreen && !showOtherAddScreen){
+        if(showAddScreen && showOtherAddScreen){
             VStack{
             NavigationView {
                 Form {
@@ -70,9 +71,10 @@ struct AddEntryScreen: View {
                         Text("Add Entry")
                     }
             }
-                .navigationBarTitle("Add Entry")
+                .navigationBarTitle(" Better Add Entry")
                 .navigationBarItems(trailing:
                   Toggle(isOn: $showOtherAddScreen, label: { Text("") })
+//                    .padding(.top, 100)
                 )
                 
         }
@@ -143,14 +145,14 @@ struct AddEntryScreen: View {
     else if (showUpdateScreen){
         UpdateScreen()
     }
-    else if (showAddScreen && showOtherAddScreen){
-        OtherAddScreen()
+    else if (!showOtherAddScreen && showAddScreen){
+        AddEntryScreen();
     }
 }
 }
 
-struct AddEntryScreen_Previews: PreviewProvider {
+struct OtherAddScreen_Previews: PreviewProvider {
     static var previews: some View {
-        AddEntryScreen()
+        OtherAddScreen()
     }
 }

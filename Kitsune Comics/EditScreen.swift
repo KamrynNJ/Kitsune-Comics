@@ -18,6 +18,7 @@ struct EditScreen: View {
     //@State var idString: UUID
     let webs: WebThings
     var idValue = ContentView()
+//    @State private var assetId: NSManagedObjectID
        
     let entryTypes = ["Webtoon", "Webnovel", "Manga"]
     
