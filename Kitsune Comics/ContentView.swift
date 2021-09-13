@@ -158,7 +158,7 @@ struct EditScreenInCode: View{
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @FetchRequest(entity: WebThings.entity(), sortDescriptors: [])
+    @FetchRequest(entity: WebThings.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \WebThings.title, ascending: true)])
 
     var enities: FetchedResults<WebThings>
     var web = WebThings()
@@ -242,6 +242,11 @@ func updateEntity(WebThing: WebThings) {
                            }
                 }
                     .navigationTitle("List")
+                //Edit screen popup
+//                    .sheet(isPresented: $showEditScreen) {
+//                        EditScreen()
+//                        .environment(\.managedObjectContext, self.viewContext)
+//                        }
                     }
                 HStack{
                     Button(action: {

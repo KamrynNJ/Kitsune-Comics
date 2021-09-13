@@ -19,6 +19,7 @@ struct OtherAddScreen: View {
     @State var imageEntered = ""
     @State var linkEntered = ""
     @State var chapterEntered = ""
+    @State var x = ""
     @State var showAddScreen = true
     @State var showFavScreen = false
     @State var showListScreen = false
@@ -27,6 +28,7 @@ struct OtherAddScreen: View {
     @State private var showOtherAddScreen = true
     @State private var showEasyAddScren = false
     @State private var hideVisited = false
+    @State private var doIWantThisViewToShow = false
     
     var body: some View {
         if(showAddScreen && showOtherAddScreen){
@@ -41,17 +43,56 @@ struct OtherAddScreen: View {
                         }
                     }
                     
-                    Section(header: Text("Title")) {
-                        TextField("Entry Title", text: $titleEntered)
-                    }
-                    Section(header: Text("Image Link")) {
-                        TextField("Entry Image Link", text: $imageEntered)
-                    }
                     Section(header: Text("Link")) {
                         TextField("Entry Link", text: $linkEntered)
                     }
-                    Section(header: Text("Chapter")) {
-                        TextField("Entry Chapter", text: $chapterEntered)
+//                    Section(header: Text("Title")) {
+//                        TextField("Entry Title", text: $titleEntered)
+//                    }
+//                    Section(header: Text("Image Link")) {
+//                        TextField("Entry Image Link", text: $imageEntered)
+//                    }
+//                    Section(header: Text("Chapter")) {
+//                        TextField("Entry Chapter", text: $chapterEntered)
+//                    }
+                    Section(header: Text("preview")){
+                        VStack {
+                                    Button("Preview Entry") {
+                                        doIWantThisViewToShow.toggle()
+                                    }
+                                    if doIWantThisViewToShow {
+//                                        HStack {
+//                                            VStack(alignment: .leading) {
+//                                             HStack{
+//                                                 Image(systemName: "placeholder image")
+//                                                 .data(url: URL(string: "\(self.imageEntered)")!)
+//                                                 .frame(width:70)
+//                                                 VStack{
+//                                                    Text("\(self.titleEntered)")
+//                                                     Text("\(self.entryTypes[self.selectedTypeIndex])")
+//                                                         .font(.subheadline)
+//                                                     HStack{
+//                                                         Text("Chapter: \(self.chapterEntered)")
+//                                                         Link("Read",
+//                                                               destination: URL(string: "\(self.linkEntered)")!)
+//                                                     }
+//                                                 }
+//                                             }
+//                                            }
+//                                            Spacer()
+//                                         Button(action: {}, label: {
+//                                             Image(systemName: "square.and.pencil")
+//                                                 .font(.largeTitle)
+//                                                 //.imageScale(.large)
+//                                         })
+//                                         .buttonStyle(BorderlessButtonStyle())
+//                                        }
+                                        WebScraper(urlGiven: linkEntered)
+                                            .padding()
+                                        
+                                    }
+                                }
+
                     }
                     Button(action: {
                         let newEntry = WebThings(context: viewContext)
@@ -78,6 +119,7 @@ struct OtherAddScreen: View {
                 )
                 
         }
+            //start of botton ui
             HStack{
                 Button(action: {
                     showHomeScreen = true
@@ -153,6 +195,8 @@ struct OtherAddScreen: View {
 
 struct OtherAddScreen_Previews: PreviewProvider {
     static var previews: some View {
-        OtherAddScreen()
+        Group {
+            OtherAddScreen()
+        }
     }
 }

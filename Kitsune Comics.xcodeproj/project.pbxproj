@@ -23,6 +23,7 @@
 		DE8DBB8F26E4B1C6000A69C3 /* UpdateScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8E26E4B1C6000A69C3 /* UpdateScreen.swift */; };
 		DE8DBB9126E5966B000A69C3 /* EditScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB9026E5966B000A69C3 /* EditScreen.swift */; };
 		DE8DBB9326ED3C06000A69C3 /* OtherAddScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB9226ED3C06000A69C3 /* OtherAddScreen.swift */; };
+		DE8DBB9526EE5BB7000A69C3 /* WebScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB9426EE5BB7000A69C3 /* WebScraper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		DE8DBB8E26E4B1C6000A69C3 /* UpdateScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateScreen.swift; sourceTree = "<group>"; };
 		DE8DBB9026E5966B000A69C3 /* EditScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditScreen.swift; sourceTree = "<group>"; };
 		DE8DBB9226ED3C06000A69C3 /* OtherAddScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherAddScreen.swift; sourceTree = "<group>"; };
+		DE8DBB9426EE5BB7000A69C3 /* WebScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebScraper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				DE8DBB8E26E4B1C6000A69C3 /* UpdateScreen.swift */,
+				DE8DBB9426EE5BB7000A69C3 /* WebScraper.swift */,
 				DE8DBB8C26E4B17E000A69C3 /* FavScreen.swift */,
 				DE8DBB5426E47175000A69C3 /* Kitsune_ComicsApp.swift */,
 				DE8DBB5626E47175000A69C3 /* ContentView.swift */,
@@ -301,6 +304,7 @@
 				DE8DBB8D26E4B17E000A69C3 /* FavScreen.swift in Sources */,
 				DE8DBB8726E478BB000A69C3 /* WebThings+CoreDataProperties.swift in Sources */,
 				DE8DBB9126E5966B000A69C3 /* EditScreen.swift in Sources */,
+				DE8DBB9526EE5BB7000A69C3 /* WebScraper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
