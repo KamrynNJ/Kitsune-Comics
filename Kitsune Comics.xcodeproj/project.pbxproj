@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE7B0AA326F38F200001DD82 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = DE7B0AA226F38F200001DD82 /* SwiftSoup */; };
 		DE8DBB5526E47175000A69C3 /* Kitsune_ComicsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB5426E47175000A69C3 /* Kitsune_ComicsApp.swift */; };
 		DE8DBB5726E47175000A69C3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB5626E47175000A69C3 /* ContentView.swift */; };
 		DE8DBB5926E47177000A69C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE8DBB5826E47177000A69C3 /* Assets.xcassets */; };
@@ -74,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE7B0AA326F38F200001DD82 /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +181,9 @@
 			dependencies = (
 			);
 			name = "Kitsune Comics";
+			packageProductDependencies = (
+				DE7B0AA226F38F200001DD82 /* SwiftSoup */,
+			);
 			productName = "Kitsune Comics";
 			productReference = DE8DBB5126E47175000A69C3 /* Kitsune Comics.app */;
 			productType = "com.apple.product-type.application";
@@ -250,6 +255,9 @@
 				Base,
 			);
 			mainGroup = DE8DBB4826E47175000A69C3;
+			packageReferences = (
+				DE7B0AA126F38F200001DD82 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+			);
 			productRefGroup = DE8DBB5226E47175000A69C3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -624,6 +632,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DE7B0AA126F38F200001DD82 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DE7B0AA226F38F200001DD82 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DE7B0AA126F38F200001DD82 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		DE8DBB5F26E47177000A69C3 /* Kitsune_Comics.xcdatamodeld */ = {
