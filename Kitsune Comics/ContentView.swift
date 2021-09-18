@@ -60,6 +60,68 @@ struct SearchBar: View {
         )
     }
 }
+
+struct FavoritesAdded: View{
+    @Environment(\.managedObjectContext) private var viewContext
+    @Environment (\.presentationMode) var presentationMode
+    var asset: WebThings {
+        viewContext.object(with: assetId) as! WebThings
+        }
+
+    @FetchRequest(entity: WebThings.entity(), sortDescriptors: [])
+    var editEnities: FetchedResults<WebThings>
+
+    //@State var idString: UUID
+    //var idValue = ContentView()
+    @State var assetId: NSManagedObjectID
+
+    let entryTypes = ["Webtoon", "Webnovel", "Manga"]
+
+    @State var newselectedTypeIndex = 0
+    @State var numberOfSlices = 1
+    @State var newtitleEntered = ""
+    @State var newimageEntered = ""
+    @State var newlinkEntered = ""
+    @State var newchapterEntered = ""
+    @State var showFavScreen = false
+    @State var showHomeScreen = false
+    @State var count = 0
+
+    @State private var isPressed = false
+        
+        var body: some View {
+            Button(action: {
+                if !(self.asset.favorite){
+                    self.asset.favorite = true
+                    showFavScreen = true
+                    
+                }
+                else{
+                    self.asset.favorite = false
+                    showFavScreen = false
+                }
+                do{
+                    try viewContext.save()
+                }
+                catch {
+                    print(error.localizedDescription)
+                }
+            }, label: {
+                if (self.asset.favorite){
+                    Image(systemName: "star.fill")
+                    .font(.largeTitle)
+                }
+                else{
+                    Image(systemName: "star")
+                    .font(.largeTitle)
+                }
+            })
+            .buttonStyle(PlainButtonStyle())
+            .foregroundColor(.yellow)
+            
+        }
+}
+
 struct EditScreenInCode: View{
     @Environment(\.managedObjectContext) private var viewContext
     @Environment (\.presentationMode) var presentationMode
@@ -171,18 +233,11 @@ struct ContentView: View {
     @State var showEditScreen = false
     @State var searchText = ""
     @State var pressed = false
+    @State var showFavList = false
     @State var selectedAssetId: NSManagedObjectID?
     //@State private var enitityId: UUID
     @State var k=0;
     
-
-func updateEntity(WebThing: WebThings) {
-    let newTitle = "\(WebThing.title)"
-        viewContext.performAndWait {
-            WebThing.title = newTitle
-            try? viewContext.save()
-        }
-    }
     var body: some View {
         if (showListScreen){
             VStack{
@@ -209,6 +264,7 @@ func updateEntity(WebThing: WebThings) {
                             }
                            }
                            Spacer()
+                        VStack{
                         Button(action: {
                             //pressed = true
                             showEditScreen = true
@@ -221,6 +277,11 @@ func updateEntity(WebThing: WebThings) {
                                 //.imageScale(.large)
                         })
                         .buttonStyle(BorderlessButtonStyle())
+                        FavoritesAdded(assetId:
+                                        selectedAssetId ?? WebThings.objectID)
+                       .environment(\.managedObjectContext, self.viewContext)
+                        }
+                        
                        }
                        .frame(height: 100)
                        .sheet(isPresented: $showEditScreen) {
@@ -341,5 +402,33 @@ extension Image {
         }
         return self
             .resizable()
+    }
+}
+struct PressActions: ViewModifier {
+    var onPress: () -> Void
+    var onRelease: () -> Void
+    
+    func body(content: Content) -> some View {
+        content
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged({ _ in
+                        onPress()
+                    })
+                    .onEnded({ _ in
+                        onRelease()
+                    })
+            )
+    }
+}
+ 
+ 
+extension View {
+    func pressAction(onPress: @escaping (() -> Void), onRelease: @escaping (() -> Void)) -> some View {
+        modifier(PressActions(onPress: {
+            onPress()
+        }, onRelease: {
+            onRelease()
+        }))
     }
 }

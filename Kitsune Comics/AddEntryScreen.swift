@@ -60,6 +60,7 @@ struct AddEntryScreen: View {
                         newEntry.link = self.linkEntered
                         newEntry.chapter = self.chapterEntered
                         newEntry.id = UUID()
+                        newEntry.favorite = false
                         do {
                             try viewContext.save()
                             showHomeScreen = true
