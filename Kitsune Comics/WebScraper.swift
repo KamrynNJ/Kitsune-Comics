@@ -25,6 +25,11 @@ func LinkGetter(givenUrl: String) -> String {
         let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
         return givenUrl
     }
+    else if(givenUrl.range(of: "https://1stkissmanga.love/", options: .caseInsensitive) != nil){
+        let url = URL(string: givenUrl)!
+        let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
+        return givenUrl
+    }
     else{
         return ""
     }
@@ -61,6 +66,31 @@ func ChapterGetter(givenUrl: String) -> String {
         return chapterFinal
     }
     else if(givenUrl.range(of: "https://zinmanga.com/", options: .caseInsensitive) != nil){
+        let url = URL(string: givenUrl)!
+        let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
+        
+        let chapterBegin = html?.distance(of: "wp-manga-chapter") ?? 0
+        let chapter2find1 = html?.index(html!.startIndex, offsetBy: chapterBegin)
+        let newHTMlbcofLink = html?[chapter2find1!..<html!.endIndex]
+        
+        let chapterBegin2 = newHTMlbcofLink?.distance(of: "Chapter") ?? 0
+        let chapter2find2 = newHTMlbcofLink?.index(newHTMlbcofLink!.startIndex, offsetBy: chapterBegin2)
+        let newHTMlbcofLink2 = newHTMlbcofLink?[chapter2find2!..<newHTMlbcofLink!.endIndex]
+        
+        let chapterBegin3 = newHTMlbcofLink2?.distance(of: " ") ?? 0
+        let chapter2find3 = newHTMlbcofLink2?.index(newHTMlbcofLink2!.startIndex, offsetBy: chapterBegin3)
+        let newHTMlbcofLink3 = newHTMlbcofLink2?[chapter2find3!..<newHTMlbcofLink2!.endIndex]
+        
+        let chapterBegin4 = newHTMlbcofLink3?.distance(of: " </a>") ?? 0
+        let chapter2find4 = newHTMlbcofLink3?.index(newHTMlbcofLink3!.startIndex, offsetBy: chapterBegin4)
+        let newHTMlbcofLink4 = newHTMlbcofLink3?[chapter2find4!..<newHTMlbcofLink3!.endIndex]
+        
+        let titleSub = html![chapter2find3!..<chapter2find4!]
+        let chapterFinal = String(titleSub)
+        
+        return chapterFinal
+    }
+    else if(givenUrl.range(of: "1stkissmanga.love", options: .caseInsensitive) != nil){
         let url = URL(string: givenUrl)!
         let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
         
@@ -145,6 +175,28 @@ func TitleGetter(givenUrl: String) -> String{
         return titleFinal2
         
     }
+    else if(givenUrl.range(of: "https://1stkissmanga.love/", options: .caseInsensitive) != nil){
+        let url = URL(string: givenUrl)!
+        let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
+        
+        let titleBegin = html?.distance(of: "post-title") ?? 0
+        let title2find1 = html?.index(html!.startIndex, offsetBy: titleBegin)
+        let titlenewHTMlbcofLink = html?[title2find1!..<html!.endIndex]
+        
+        let titleBegin2 = titlenewHTMlbcofLink?.distance(of: "<h1>") ?? 0
+        let title2find2 = titlenewHTMlbcofLink?.index(titlenewHTMlbcofLink!.startIndex, offsetBy: titleBegin2+5)
+        let titlenewHTMlbcofLink2 = titlenewHTMlbcofLink?[title2find2!..<titlenewHTMlbcofLink!.endIndex]
+        
+        let titleBegin3 = titlenewHTMlbcofLink2?.distance(of: "</h1>") ?? 0
+        let title2find3 = titlenewHTMlbcofLink2?.index(titlenewHTMlbcofLink2!.startIndex, offsetBy: titleBegin3-1)
+        let titlenewHTMlbcofLink3 = titlenewHTMlbcofLink2?[title2find3!..<titlenewHTMlbcofLink2!.endIndex]
+        
+        let titlenewHTMlbcofLink4 = titlenewHTMlbcofLink2?[title2find2!..<title2find3!]
+        
+        let z = titlenewHTMlbcofLink4!
+        let titleFinal2 = String(z)
+        return titleFinal2
+    }
     else{
         return ""
     }
@@ -177,9 +229,26 @@ func ImageGetter(givenUrl: String) -> String{
         let img2find3 = newHTMlbcofLink2?.index(newHTMlbcofLink2!.startIndex, offsetBy: imgBegin3-1)
         let newHTMlbcofLink3 = newHTMlbcofLink2?[img2find3!..<newHTMlbcofLink2!.endIndex]
         
-//        let imgBegin4 = newHTMlbcofLink3?.distance(of: " </a>") ?? 0
-//        let img2find4 = newHTMlbcofLink3?.index(newHTMlbcofLink3!.startIndex, offsetBy: imgBegin4)
-//        let newHTMlbcofLink4 = newHTMlbcofLink3?[img2find4!..<newHTMlbcofLink3!.endIndex]
+        let imgSub = html![img2find2!..<img2find3!]
+        let imgFinal = String(imgSub)
+        
+        return imgFinal
+    }
+    else if(givenUrl.range(of: "https://1stkissmanga.love/", options: .caseInsensitive) != nil){
+        let url = URL(string: givenUrl)!
+        let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
+        
+        let imgBegin = html?.distance(of: "summary_image") ?? 0
+        let img2find1 = html?.index(html!.startIndex, offsetBy: imgBegin)
+        let newHTMlbcofLink = html?[img2find1!..<html!.endIndex]
+        
+        let imgBegin2 = newHTMlbcofLink?.distance(of: "srcset=\"") ?? 0
+        let img2find2 = newHTMlbcofLink?.index(newHTMlbcofLink!.startIndex, offsetBy: imgBegin2+8)
+        let newHTMlbcofLink2 = newHTMlbcofLink?[img2find2!..<newHTMlbcofLink!.endIndex]
+        
+        let imgBegin3 = newHTMlbcofLink2?.distance(of: " ") ?? 0
+        let img2find3 = newHTMlbcofLink2?.index(newHTMlbcofLink2!.startIndex, offsetBy: imgBegin3)
+        let newHTMlbcofLink3 = newHTMlbcofLink2?[img2find3!..<newHTMlbcofLink2!.endIndex]
         
         let imgSub = html![img2find2!..<img2find3!]
         let imgFinal = String(imgSub)
@@ -197,6 +266,10 @@ func TypeGetter(givenUrl: String) -> String{
         return type
     }
     else if(givenUrl.range(of: "https://zinmanga.com/", options: .caseInsensitive) != nil){
+        let type = "Webtoon"
+        return type
+    }
+    else if(givenUrl.range(of: "1stkissmanga.love/", options: .caseInsensitive) != nil){
         let type = "Webtoon"
         return type
     }
@@ -222,7 +295,7 @@ struct WebScraper: View {
         let titleFinal = TitleGetter(givenUrl: urlGiven)
         let imagelinkFinal = ImageGetter(givenUrl: urlGiven)
         let typeFinal = TypeGetter(givenUrl: urlGiven)
-        //Text (titleFinal)
+        //Text (chapterFinal)
             HStack {
                 VStack(alignment: .leading) {
                  HStack{
