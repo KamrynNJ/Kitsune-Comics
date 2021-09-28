@@ -25,6 +25,7 @@ struct AddEntryScreen: View {
     @State var showHomeScreen = false
     @State var showUpdateScreen = false
     @State var showOtherAddScreen = false
+    @State private var showingAlert = false
     
     
     var body: some View {
@@ -53,6 +54,7 @@ struct AddEntryScreen: View {
                         TextField("Entry Chapter", text: $chapterEntered)
                     }
                     Button(action: {
+                        showingAlert = true
                         let newEntry = WebThings(context: viewContext)
                         newEntry.type = self.entryTypes[self.selectedTypeIndex]
                         newEntry.title = self.titleEntered
@@ -74,9 +76,18 @@ struct AddEntryScreen: View {
                 .navigationBarTitle("Add Entry")
                 .navigationBarItems(trailing:
                   Toggle(isOn: $showOtherAddScreen, label: { Text("") })
+                                        .toggleStyle(.switch)
+                                        //.padding(.top,100)
+                                        
                 )
                 
+                
         }
+            .alert(isPresented: $showingAlert) {
+                Alert(
+                    title: Text("Entry Added")
+                )
+            }
             HStack{
                 Button(action: {
                     showHomeScreen = true
@@ -145,7 +156,7 @@ struct AddEntryScreen: View {
         UpdateScreen()
     }
     else if (showAddScreen && showOtherAddScreen){
-        OtherAddScreen()
+        WebScraper()
     }
 }
 }
@@ -153,5 +164,6 @@ struct AddEntryScreen: View {
 struct AddEntryScreen_Previews: PreviewProvider {
     static var previews: some View {
         AddEntryScreen()
+
     }
 }

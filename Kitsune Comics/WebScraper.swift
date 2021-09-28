@@ -30,13 +30,23 @@ func LinkGetter(givenUrl: String) -> String {
         let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
         return givenUrl
     }
+    else if(givenUrl.range(of: "batotoo.com/rss", options: .caseInsensitive) != nil){
+        let url = URL(string: givenUrl)
+        let contents = try? String(contentsOf: url!)
+        let linkBegin = contents?.distance(of: "https://batotoo.com/series") ?? 0
+        let linkEnd = contents?.distance(of: "</link>") ?? 0
+        let linkRange = linkBegin..<linkEnd
+        let linkGotten = (contents?[linkRange])!
+        let linkFinal = String(linkGotten)
+        return linkFinal
+    }
     else{
         return ""
     }
 }
 
 func ChapterGetter(givenUrl: String) -> String {
-    if(givenUrl.range(of: "bato.to/rss", options: .caseInsensitive) != nil){
+    if(givenUrl.range(of: "bato.to/rss", options: .caseInsensitive) != nil || givenUrl.range(of: "batotoo.com/rss", options: .caseInsensitive) != nil){
         let url = URL(string: givenUrl)
         let contents = try? String(contentsOf: url!)
         let chapterBegin = contents?.distance(of: "<item>") ?? 0
@@ -121,7 +131,7 @@ func ChapterGetter(givenUrl: String) -> String {
 }
 
 func TitleGetter(givenUrl: String) -> String{
-    if(givenUrl.range(of: "bato.to/rss", options: .caseInsensitive) != nil){
+    if(givenUrl.range(of: "bato.to/rss", options: .caseInsensitive) != nil || givenUrl.range(of: "batotoo.com/rss", options: .caseInsensitive) != nil){
         let url = URL(string: givenUrl)
         let contents = try? String(contentsOf: url!)
         let titleBegin = contents?.distance(of: "<item>") ?? 0
@@ -203,7 +213,7 @@ func TitleGetter(givenUrl: String) -> String{
 }
 
 func ImageGetter(givenUrl: String) -> String{
-    if(givenUrl.range(of: "bato.to/rss", options: .caseInsensitive) != nil){
+    if(givenUrl.range(of: "bato.to/rss", options: .caseInsensitive) != nil || givenUrl.range(of: "batotoo.com/rss", options: .caseInsensitive) != nil){
         let url = URL(string: givenUrl)
         let contents = try? String(contentsOf: url!)
         let imagelinkBegin = contents?.distance(of: "https://xfs-000") ?? 0
@@ -261,7 +271,7 @@ func ImageGetter(givenUrl: String) -> String{
 }
 
 func TypeGetter(givenUrl: String) -> String{
-    if(givenUrl.range(of: "bato.to/rss", options: .caseInsensitive) != nil){
+    if(givenUrl.range(of: "bato.to/rss", options: .caseInsensitive) != nil || givenUrl.range(of: "batotoo.com/rss", options: .caseInsensitive) != nil){
         let type = "Webtoon"
         return type
     }
@@ -285,61 +295,186 @@ struct WebScraper: View {
     let entryTypes = ["Webtoon", "Webnovel", "Manga"]
     
     @State var selectedTypeIndex = 0
-    @State var urlGiven: String
+    @State var urlGiven = ""
     @State var showHomeScreen = false
+    @State private var showingAlert = false
     var otherAddScreening = OtherAddScreen()
+    @State var numberOfSlices = 1
+    @State var titleEntered = ""
+    @State var imageEntered = ""
+    @State var linkEntered = ""
+    @State var chapterEntered = ""
+    @State var x = ""
+    @State var showAddScreen = true
+    @State var showFavScreen = false
+    @State var showListScreen = false
+    @State var showUpdateScreen = false
+    @State private var showOtherAddScreen = true
+    @State private var showEasyAddScren = false
+    @State private var hideVisited = false
+    @State private var doIWantThisViewToShow = false
     
     var body: some View {
-        let linkFinal = LinkGetter(givenUrl: urlGiven)
-        let chapterFinal = ChapterGetter(givenUrl: urlGiven)
-        let titleFinal = TitleGetter(givenUrl: urlGiven)
-        let imagelinkFinal = ImageGetter(givenUrl: urlGiven)
-        let typeFinal = TypeGetter(givenUrl: urlGiven)
+//        let linkFinal = LinkGetter(givenUrl: linkEntered)
+//        let chapterFinal = ChapterGetter(givenUrl: linkEntered)
+//        let titleFinal = TitleGetter(givenUrl: linkEntered)
+//        let imagelinkFinal = ImageGetter(givenUrl: linkEntered)
+//        let typeFinal = TypeGetter(givenUrl: linkEntered)
         //Text (chapterFinal)
-            HStack {
-                VStack(alignment: .leading) {
-                 HStack{
-                     Image(systemName: "placeholder image")
-                     .data(url: URL(string: "\(imagelinkFinal)")!)
-                        .frame(width:140, height: 200)
-                     VStack{
-                        Text("\(titleFinal)")
-                         HStack{
-                             Text("Chapter: \(chapterFinal)")
-                             Link("Read",
-                                   destination: URL(string: "\(linkFinal)")!)
-                         }
-                     }
-                 }
-                }
-            }
+        if(showAddScreen && showOtherAddScreen){
+            VStack{
+            NavigationView {
+                Form {
+                    Section(header: Text("Link")) {
+                        TextField("Entry Link", text: $linkEntered)
+                    }
+                    Section(header: Text("preview")){
+                        VStack {
+                                    Button("Preview Entry") {
+                                        doIWantThisViewToShow.toggle()
+                                    }
+                        if doIWantThisViewToShow {
+                            let linkFinal = LinkGetter(givenUrl: linkEntered)
+                            let chapterFinal = ChapterGetter(givenUrl: linkEntered)
+                            let titleFinal = TitleGetter(givenUrl: linkEntered)
+                            let imagelinkFinal = ImageGetter(givenUrl: linkEntered)
+                            let typeFinal = TypeGetter(givenUrl: linkEntered)
+                            let placeholder = URL(string: "https://i.quotev.com/gcbuwion4kwa.jpg")
+                            
+                            HStack {
+                                VStack(alignment: .leading) {
+                                 HStack{
+                                     Image(systemName: "placeholder image")
+                                         .data(url: (URL(string: "\(imagelinkFinal)")) ?? placeholder!)
+                                        .frame(width:140, height: 200)
+                                     VStack{
+                                        Text("\(titleFinal)")
+                                         HStack{
+                                             Text("Chapter: \(chapterFinal)")
+                                             //Text("Link: \(linkFinal)")
+                                             Link("Read",
+                                                  destination: URL(string: "\(linkFinal)") ?? placeholder!)
+                                         }
+                                     }
+                                 }
+                                }
+                            }
+                            .alert(isPresented: $showingAlert) {
+                                            Alert(
+                                                title: Text("Entry Added")
+                                            )
+                                        }
 
-            Button(action: {
-                print (titleFinal)
-                let newEntry = WebThings(context: viewContext)
-                newEntry.type = typeFinal
-                newEntry.title = titleFinal
-                newEntry.image_link = imagelinkFinal
-                newEntry.link = linkFinal
-                newEntry.chapter = chapterFinal
-                newEntry.id = UUID()
-                do {
-                    try viewContext.save()
-                    showHomeScreen = true
-                } catch {
-                    print(error.localizedDescription)
-                }
-            }) {
-                Text("Add Entry")
-            }
-            .buttonStyle(BorderlessButtonStyle())
-    }
+                            Button(action: {
+                                showingAlert = true
+
+                                let newEntry = WebThings(context: viewContext)
+                                newEntry.type = typeFinal
+                                newEntry.title = titleFinal
+                                newEntry.image_link = imagelinkFinal
+                                newEntry.link = linkFinal
+                                newEntry.chapter = chapterFinal
+                                newEntry.id = UUID()
+                                do {
+                                    try viewContext.save()
+                                    showHomeScreen = true
+                                } catch {
+                                    print(error.localizedDescription)
+                                }
+                            }) {
+                                Text("Add Entry")
+                            }
+                            .buttonStyle(BorderlessButtonStyle())
+                        }
+            
     
-}
+                        }
+                        
+                    }
+                }
+                .navigationBarTitle(" Better Add Entry")
+                .navigationBarItems(trailing:
+                  Toggle(isOn: $showOtherAddScreen, label: { Text("") })
+                    .toggleStyle(.switch)
+                                    )
+            }//end of hs
+                HStack{
+                    Button(action: {
+                        showHomeScreen = true
+                        showAddScreen = false
+                        showFavScreen = false
+                        showListScreen = false
+                        showUpdateScreen = false
+                    }, label: {
+                        Image(systemName: "house")
+                            .font(.largeTitle)
+                    })
+                    Button(action: {
+                        showFavScreen = true
+                        showAddScreen = false
+                        showListScreen = false
+                        showHomeScreen = false
+                        showUpdateScreen = false
+                    }, label: {
+                        Image(systemName: "star")
+                            .font(.largeTitle)
+                    })
+                    Button(action: {
+                        showAddScreen = true
+                        showFavScreen = false
+                        showListScreen = false
+                        showHomeScreen = false
+                        showUpdateScreen = false
+                    }, label: {
+                        Image(systemName: "plus.circle")
+                            .font(.largeTitle)
+                    })
+                    Button(action: {
+                        showUpdateScreen = true
+                        showAddScreen = false
+                        showFavScreen = false
+                        showListScreen = false
+                        showHomeScreen = false
+                    }, label: {
+                        Image(systemName: "square.and.arrow.up")
+                            .font(.largeTitle)
+                    })
+                    Button(action: {
+                        showListScreen = true
+                        showAddScreen = false
+                        showFavScreen = false
+                        showHomeScreen = false
+                        showUpdateScreen = false
+                    }, label: {
+                        Image(systemName: "list.bullet")
+                            .font(.largeTitle)
+                    })
+                    
+                }
+                }
+        }
+        else if (showListScreen){
+                ContentView()
+            }
+        else if(showHomeScreen){
+            HomeScreen()
+        }
+        else if(showFavScreen){
+            FavScreen()
+        }
+        else if (showUpdateScreen){
+            UpdateScreen()
+        }
+        else if (!showOtherAddScreen && showAddScreen){
+            AddEntryScreen();
+        }
+            }
+        }
+
 
 struct WebScraper_Previews: PreviewProvider {
     static var previews: some View {
-        WebScraper(urlGiven: "https://zinmanga.com/manga/the-tyrants-guardian-is-an-evil-witch/")
+        WebScraper()
     }
 }
 extension Collection {

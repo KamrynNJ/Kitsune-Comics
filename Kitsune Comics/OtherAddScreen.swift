@@ -87,35 +87,35 @@ struct OtherAddScreen: View {
 //                                         })
 //                                         .buttonStyle(BorderlessButtonStyle())
 //                                        }
-                                        WebScraper(urlGiven: linkEntered)
-                                            .padding()
+                                        //WebScraper(urlGiven: linkEntered)
+                                            //.padding()
                                         
                                     }
                                 }
 
                     }
-                    Button(action: {
-                        let newEntry = WebThings(context: viewContext)
-                        newEntry.type = self.entryTypes[self.selectedTypeIndex]
-                        newEntry.title = self.titleEntered
-                        newEntry.image_link = self.imageEntered
-                        newEntry.link = self.linkEntered
-                        newEntry.chapter = self.chapterEntered
-                        newEntry.id = UUID()
-                        do {
-                            try viewContext.save()
-                            showHomeScreen = true
-                        } catch {
-                            print(error.localizedDescription)
-                        }
-                    }) {
-                        Text("Add Entry")
-                    }
+//                    Button(action: {
+//                        let newEntry = WebThings(context: viewContext)
+//                        newEntry.type = self.entryTypes[self.selectedTypeIndex]
+//                        newEntry.title = self.titleEntered
+//                        newEntry.image_link = self.imageEntered
+//                        newEntry.link = self.linkEntered
+//                        newEntry.chapter = self.chapterEntered
+//                        newEntry.id = UUID()
+//                        do {
+//                            try viewContext.save()
+//                            showHomeScreen = true
+//                        } catch {
+//                            print(error.localizedDescription)
+//                        }
+//                    }) {
+//                        Text("Add Entry")
+//                    }
             }
                 .navigationBarTitle(" Better Add Entry")
                 .navigationBarItems(trailing:
                   Toggle(isOn: $showOtherAddScreen, label: { Text("") })
-//                    .padding(.top, 100)
+                    .toggleStyle(.switch)
                 )
                 
         }

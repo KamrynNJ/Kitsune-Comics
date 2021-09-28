@@ -140,6 +140,7 @@ struct EditScreenInCode: View{
     
     @State var newselectedTypeIndex = 0
     @State var numberOfSlices = 1
+    @State var style = 0
     @State var newtitleEntered = ""
     @State var newimageEntered = ""
     @State var newlinkEntered = ""
@@ -234,9 +235,11 @@ struct ContentView: View {
     @State var searchText = ""
     @State var pressed = false
     @State var showFavList = false
+    @State var filterSelected = "all"
     @State var selectedAssetId: NSManagedObjectID?
     //@State private var enitityId: UUID
     @State var k=0;
+    let placeholder = URL(string: "https://i.quotev.com/gcbuwion4kwa.jpg")
     
     var body: some View {
         if (showListScreen){
@@ -245,11 +248,13 @@ struct ContentView: View {
                 List{
                     SearchBar(text: $searchText)
                     ForEach(enities.filter({ searchText.isEmpty ? true : $0.title.contains(searchText) })) {WebThings in
-                       HStack {
+                        if(filterSelected != "all"){
+                            if(WebThings.type == filterSelected){
+                        HStack {
                            VStack(alignment: .leading) {
                             HStack{
                                 Image(systemName: "placeholder image")
-                                .data(url: URL(string: "\(WebThings.image_link)")!)
+                                .data(url: URL(string: "\(WebThings.image_link)") ?? placeholder!)
                                 .frame(width:70)
                                 VStack{
                                    Text("\(WebThings.title)")
@@ -258,7 +263,7 @@ struct ContentView: View {
                                     HStack{
                                         Text("Chapter: \(WebThings.chapter)")
                                         Link("Read",
-                                              destination: URL(string: "\(WebThings.link)")!)
+                                              destination: URL(string: "\(WebThings.link)") ?? placeholder!)
                                     }
                                 }
                             }
@@ -290,6 +295,54 @@ struct ContentView: View {
                            .environment(\.managedObjectContext, self.viewContext)
                            }
                         //k=k+1;
+                            }
+                        }
+                        else{
+                            HStack {
+                               VStack(alignment: .leading) {
+                                HStack{
+                                    Image(systemName: "placeholder image")
+                                    .data(url: URL(string: "\(WebThings.image_link)") ?? placeholder!)
+                                    .frame(width:70)
+                                    VStack{
+                                       Text("\(WebThings.title)")
+                                        Text("\(WebThings.type)")
+                                            .font(.subheadline)
+                                        HStack{
+                                            Text("Chapter: \(WebThings.chapter)")
+                                            Link("Read",
+                                                  destination: URL(string: "\(WebThings.link)") ?? placeholder!)
+                                        }
+                                    }
+                                }
+                               }
+                               Spacer()
+                            VStack{
+                            Button(action: {
+                                //pressed = true
+                                showEditScreen = true
+                                self.selectedAssetId = WebThings.objectID
+                                //guard let image = self.selectedAssetId
+                                
+                            }, label: {
+                                Image(systemName: "square.and.pencil")
+                                    .font(.largeTitle)
+                                    //.imageScale(.large)
+                            })
+                            .buttonStyle(BorderlessButtonStyle())
+                            FavoritesAdded(assetId:
+                                            selectedAssetId ?? WebThings.objectID)
+                           .environment(\.managedObjectContext, self.viewContext)
+                            }
+                            
+                           }
+                           .frame(height: 100)
+                           .sheet(isPresented: $showEditScreen) {
+                            EditScreenInCode(assetId:
+                                                selectedAssetId ?? WebThings.objectID)
+                               .environment(\.managedObjectContext, self.viewContext)
+                               }
+                        }
                        }//end of for loop
                     .onDelete { indexSet in
                                for index in indexSet {
@@ -303,12 +356,25 @@ struct ContentView: View {
                            }
                 }
                     .navigationTitle("List")
+                    .navigationBarItems(trailing:
+                            Menu {
+                                        Button("All", action: allSelected)
+                                        Button("Webtoons", action: wtSelected)
+                                        Button("WebNovels", action: wnSelected)
+                                        Button("Manga", action: mSelected)
+                    } label:{
+                        Label("Options", systemImage: "line.3.horizontal.decrease.circle")
+                            .font(.largeTitle)
+                    }
+                                            
+                    )
                 //Edit screen popup
 //                    .sheet(isPresented: $showEditScreen) {
 //                        EditScreen()
 //                        .environment(\.managedObjectContext, self.viewContext)
 //                        }
                     }
+                
                 HStack{
                     Button(action: {
                         showHomeScreen = true
@@ -380,6 +446,18 @@ struct ContentView: View {
         }
         
     }
+        func allSelected() {
+            filterSelected = "all"
+        }
+        func wtSelected() {
+            filterSelected = "Webtoon"
+        }
+        func wnSelected() {
+            filterSelected = "Webnovel"
+        }
+        func mSelected() {
+            filterSelected = "Manga"
+        }
 }
 
 private let itemFormatter: DateFormatter = {
