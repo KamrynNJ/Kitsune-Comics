@@ -1,15 +1,94 @@
 import SwiftUI
+import CoreData
 
 struct UpdateScreen: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(entity: WebThings.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \WebThings.title, ascending: true)])
+
+    var enities: FetchedResults<WebThings>
+    var web = WebThings()
+    
     @State var showAddScreen = false
-    @State var showFavScreen = false
+    @State var showFavScreen = true
     @State var showListScreen = false
     @State var showHomeScreen = false
     @State var showUpdateScreen = true
+    @State var showEditScreen = false
+    @State var searchText = ""
+    @State var pressed = false
+    @State var showFavList = false
+    @State var showUpScreen = false
+    @State var selectedAssetId: NSManagedObjectID?
+    @State var k=0;
     var body: some View {
-        if(showUpdateScreen){
-            VStack{
-            Text("Updates")
+            if (showUpdateScreen){
+                    VStack{
+                    NavigationView {
+                        List{
+                            SearchBar(text: $searchText)
+                            ForEach(enities.filter({ searchText.isEmpty ? true : $0.title.contains(searchText) })) {WebThings in
+                                if(WebThings.update){
+                                   HStack {
+                                       VStack(alignment: .leading) {
+                                        HStack{
+                                            Image(systemName: "placeholder image")
+                                            .data(url: URL(string: "\(WebThings.image_link)")!)
+                                            .frame(width:70)
+                                            VStack{
+                                               Text("\(WebThings.title)")
+                                                Text("\(WebThings.type)")
+                                                    .font(.subheadline)
+                                                HStack{
+                                                    Text("Chapter: \(WebThings.chapter)")
+                                                    Link("Read",
+                                                          destination: URL(string: "\(WebThings.link)")!)
+                                                    UpdatedAdded(assetId:
+                                                                    selectedAssetId ?? WebThings.objectID)
+                                                   .environment(\.managedObjectContext, self.viewContext)
+                                                }
+                                            }
+                                        }
+                                       }
+                                       Spacer()
+                                    VStack{
+                                    Button(action: {
+                                        showEditScreen = true
+                                        self.selectedAssetId = WebThings.objectID
+                                        //guard let image = self.selectedAssetId
+        
+                                    }, label: {
+                                        Image(systemName: "square.and.pencil")
+                                            .font(.largeTitle)
+                                            //.imageScale(.large)
+                                    })
+                                    .buttonStyle(BorderlessButtonStyle())
+                                    FavoritesAdded(assetId:
+                                                    selectedAssetId ?? WebThings.objectID)
+                                   .environment(\.managedObjectContext, self.viewContext)
+                                    }
+                                    
+                                   }
+                                   .frame(height: 100)
+                                   .sheet(isPresented: $showEditScreen) {
+                                    EditScreenInCode(assetId:
+                                                        selectedAssetId ?? WebThings.objectID)
+                                       .environment(\.managedObjectContext, self.viewContext)
+                                       }
+                                }
+                               }//end of for loop
+                            .onDelete { indexSet in
+                                       for index in indexSet {
+                                           viewContext.delete(enities[index])
+                                       }
+                                       do {
+                                           try viewContext.save()
+                                       } catch {
+                                           print(error.localizedDescription)
+                                       }
+                                   }
+                        }
+                            .navigationTitle("Updates")
+                            }
                 HStack{
                     Button(action: {
                         showHomeScreen = true
@@ -65,6 +144,7 @@ struct UpdateScreen: View {
                 }
             }
         }
+        
         else if(showFavScreen){
             FavScreen()
         }
@@ -83,6 +163,6 @@ struct UpdateScreen: View {
 
 struct UpdateScreen_Previews: PreviewProvider {
     static var previews: some View {
-        HomeScreen()
+        UpdateScreen().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }

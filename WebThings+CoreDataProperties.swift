@@ -23,6 +23,7 @@ extension WebThings {
     @NSManaged public var title: String
     @NSManaged public var type: String
     @NSManaged public var favorite: Bool
+    @NSManaged public var update: Bool
 }
     
     

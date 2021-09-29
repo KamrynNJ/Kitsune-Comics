@@ -161,6 +161,6 @@ struct FavScreen: View {
    
 struct FavScreen_Previews: PreviewProvider {
     static var previews: some View {
-        HomeScreen().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        FavScreen().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }

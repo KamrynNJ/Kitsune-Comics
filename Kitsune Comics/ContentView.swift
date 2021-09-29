@@ -60,7 +60,76 @@ struct SearchBar: View {
         )
     }
 }
+struct UpdatedAdded:View{
+    @Environment(\.managedObjectContext) private var viewContext
+    @Environment (\.presentationMode) var presentationMode
+    var asset: WebThings {
+        viewContext.object(with: assetId) as! WebThings
+        }
 
+    @FetchRequest(entity: WebThings.entity(), sortDescriptors: [])
+    var editEnities: FetchedResults<WebThings>
+
+    //@State var idString: UUID
+    //var idValue = ContentView()
+    @State var assetId: NSManagedObjectID
+
+    let entryTypes = ["Webtoon", "Webnovel", "Manga"]
+
+    @State var newselectedTypeIndex = 0
+    @State var numberOfSlices = 1
+    @State var newtitleEntered = ""
+    @State var newimageEntered = ""
+    @State var newlinkEntered = ""
+    @State var newchapterEntered = ""
+    @State var showFavScreen = false
+    @State var showHomeScreen = false
+    @State var showUpScreen = false
+    @State var count = 0
+
+    @State private var isPressed = false
+        
+        var body: some View {
+            let currentChapter = ChapterGetter(givenUrl: self.asset.link)
+            let x = currentChapter.trimmingCharacters(in: .whitespacesAndNewlines)
+            Button(action: {
+                print(x)
+                
+            if (self.asset.chapter.compare(x) == .orderedSame) {
+                self.asset.update=false
+                //showUpScreen=false
+            }
+            else if(x==""){
+                self.asset.update=false
+            }
+            else{
+                self.asset.update=true
+                //showUpScreen = true
+            }
+            do{
+                try viewContext.save()
+            }
+            catch {
+                print(error.localizedDescription)
+            }
+
+            },label: {
+                if (self.asset.update){
+                    Image(systemName: "circle.fill")
+                        .foregroundColor(.green)
+                }
+                else{
+                    Image(systemName: "circle.fill")
+                        .foregroundColor(.gray)
+                }
+            }
+                )
+            .buttonStyle(PlainButtonStyle())
+           
+            
+            
+        }
+}
 struct FavoritesAdded: View{
     @Environment(\.managedObjectContext) private var viewContext
     @Environment (\.presentationMode) var presentationMode
@@ -264,6 +333,9 @@ struct ContentView: View {
                                         Text("Chapter: \(WebThings.chapter)")
                                         Link("Read",
                                               destination: URL(string: "\(WebThings.link)") ?? placeholder!)
+                                        UpdatedAdded(assetId:
+                                                        selectedAssetId ?? WebThings.objectID)
+                                       .environment(\.managedObjectContext, self.viewContext)
                                     }
                                 }
                             }
@@ -312,6 +384,9 @@ struct ContentView: View {
                                             Text("Chapter: \(WebThings.chapter)")
                                             Link("Read",
                                                   destination: URL(string: "\(WebThings.link)") ?? placeholder!)
+                                            UpdatedAdded(assetId:
+                                                            selectedAssetId ?? WebThings.objectID)
+                                           .environment(\.managedObjectContext, self.viewContext)
                                         }
                                     }
                                 }
@@ -363,8 +438,8 @@ struct ContentView: View {
                                         Button("WebNovels", action: wnSelected)
                                         Button("Manga", action: mSelected)
                     } label:{
-                        Label("Options", systemImage: "line.3.horizontal.decrease.circle")
-                            .font(.largeTitle)
+                        Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
+                            //.font(.largeTitle)
                     }
                                             
                     )
