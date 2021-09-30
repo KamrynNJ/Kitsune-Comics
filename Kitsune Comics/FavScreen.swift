@@ -28,6 +28,8 @@ struct FavScreen: View {
                         SearchBar(text: $searchText)
                         ForEach(enities.filter({ searchText.isEmpty ? true : $0.title.contains(searchText) })) {WebThings in
                             if(WebThings.favorite){
+                                let currentChapter = ChapterGetter(givenUrl: WebThings.link)
+                                let x = currentChapter.trimmingCharacters(in: .whitespacesAndNewlines)
                                HStack {
                                    VStack(alignment: .leading) {
                                     HStack{
@@ -42,6 +44,8 @@ struct FavScreen: View {
                                                 Text("Chapter: \(WebThings.chapter)")
                                                 Link("Read",
                                                       destination: URL(string: "\(WebThings.link)")!)
+                                                Image(systemName: "circle.fill")
+                                                    .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .gray : .green)
                                             }
                                         }
                                     }

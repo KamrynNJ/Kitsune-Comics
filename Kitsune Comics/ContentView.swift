@@ -60,76 +60,44 @@ struct SearchBar: View {
         )
     }
 }
-struct UpdatedAdded:View{
-    @Environment(\.managedObjectContext) private var viewContext
-    @Environment (\.presentationMode) var presentationMode
-    var asset: WebThings {
-        viewContext.object(with: assetId) as! WebThings
-        }
-
-    @FetchRequest(entity: WebThings.entity(), sortDescriptors: [])
-    var editEnities: FetchedResults<WebThings>
-
-    //@State var idString: UUID
-    //var idValue = ContentView()
-    @State var assetId: NSManagedObjectID
-
-    let entryTypes = ["Webtoon", "Webnovel", "Manga"]
-
-    @State var newselectedTypeIndex = 0
-    @State var numberOfSlices = 1
-    @State var newtitleEntered = ""
-    @State var newimageEntered = ""
-    @State var newlinkEntered = ""
-    @State var newchapterEntered = ""
-    @State var showFavScreen = false
-    @State var showHomeScreen = false
-    @State var showUpScreen = false
-    @State var count = 0
-
-    @State private var isPressed = false
-        
-        var body: some View {
-            let currentChapter = ChapterGetter(givenUrl: self.asset.link)
-            let x = currentChapter.trimmingCharacters(in: .whitespacesAndNewlines)
-            Button(action: {
-                print(x)
-                
-            if (self.asset.chapter.compare(x) == .orderedSame) {
-                self.asset.update=false
-                //showUpScreen=false
-            }
-            else if(x==""){
-                self.asset.update=false
-            }
-            else{
-                self.asset.update=true
-                //showUpScreen = true
-            }
-            do{
-                try viewContext.save()
-            }
-            catch {
-                print(error.localizedDescription)
-            }
-
-            },label: {
-                if (self.asset.update){
-                    Image(systemName: "circle.fill")
-                        .foregroundColor(.green)
-                }
-                else{
-                    Image(systemName: "circle.fill")
-                        .foregroundColor(.gray)
-                }
-            }
-                )
-            .buttonStyle(PlainButtonStyle())
-           
-            
-            
-        }
-}
+//struct UpdatedAdded:View{
+//    @Environment(\.managedObjectContext) private var viewContext
+//    @Environment (\.presentationMode) var presentationMode
+//    var asset: WebThings {
+//        viewContext.object(with: assetId) as! WebThings
+//        }
+//
+//    @FetchRequest(entity: WebThings.entity(), sortDescriptors: [])
+//    var editEnities: FetchedResults<WebThings>
+//
+//    //@State var idString: UUID
+//    //var idValue = ContentView()
+//    @State var assetId: NSManagedObjectID
+//
+//    let entryTypes = ["Webtoon", "Webnovel", "Manga"]
+//
+//    @State var newselectedTypeIndex = 0
+//    @State var numberOfSlices = 1
+//    @State var newtitleEntered = ""
+//    @State var newimageEntered = ""
+//    @State var newlinkEntered = ""
+//    @State var newchapterEntered = ""
+//    @State var showFavScreen = false
+//    @State var showHomeScreen = false
+//    @State var showUpScreen = false
+//    @State var count = 0
+//
+//    @State private var isPressed = false
+//        
+//        var body: some View {
+//            let currentChapter = ChapterGetter(givenUrl: self.asset.link)
+//            let x = currentChapter.trimmingCharacters(in: .whitespacesAndNewlines)
+//            self.asset.update = (self.asset.chapter.compare(x) == .orderedSame) ? false : true
+//           
+//            
+//            
+//        }
+//}
 struct FavoritesAdded: View{
     @Environment(\.managedObjectContext) private var viewContext
     @Environment (\.presentationMode) var presentationMode
@@ -287,6 +255,71 @@ struct EditScreenInCode: View{
     }
 }
 }
+struct BottomBar: View{
+    @State var showAddScreen = false
+    @State var showFavScreen = false
+    @State var showListScreen = true
+    @State var showHomeScreen = false
+    @State var showUpdateScreen = false
+    @State var showEditScreen = false
+    var body: some View{
+        HStack{
+            Button(action: {
+                showHomeScreen = true
+                 showAddScreen = false
+                 showFavScreen = false
+                 showListScreen = false
+                 showUpdateScreen = false
+                
+            }, label: {
+                Image(systemName: "house")
+                    .font(.largeTitle)
+            })
+            Button(action: {
+                showFavScreen = true
+                showAddScreen = false
+                showListScreen = false
+                showHomeScreen = false
+                showUpdateScreen = false
+            }, label: {
+                Image(systemName: "star")
+                    .font(.largeTitle)
+            })
+            Button(action: {
+                showAddScreen = true
+                showFavScreen = false
+                showListScreen = false
+                showHomeScreen = false
+                showUpdateScreen = false
+            }, label: {
+                Image(systemName: "plus.circle")
+                    .font(.largeTitle)
+            })
+            Button(action: {
+                showUpdateScreen = true
+                showAddScreen = false
+                showFavScreen = false
+                showListScreen = false
+                showHomeScreen = false
+            }, label: {
+                Image(systemName: "square.and.arrow.up")
+                    .font(.largeTitle)
+            })
+            Button(action: {
+                showListScreen = true
+                showAddScreen = false
+                showFavScreen = false
+                showHomeScreen = false
+                showUpdateScreen = false
+            }, label: {
+                Image(systemName: "list.bullet")
+                    .font(.largeTitle)
+            })
+            
+            
+        }
+    }
+}
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -303,9 +336,11 @@ struct ContentView: View {
     @State var showEditScreen = false
     @State var searchText = ""
     @State var pressed = false
+    @State var saveUpdate = false
     @State var showFavList = false
     @State var filterSelected = "all"
     @State var selectedAssetId: NSManagedObjectID?
+    
     //@State private var enitityId: UUID
     @State var k=0;
     let placeholder = URL(string: "https://i.quotev.com/gcbuwion4kwa.jpg")
@@ -314,142 +349,139 @@ struct ContentView: View {
         if (showListScreen){
             VStack{
             NavigationView {
-                List{
-                    SearchBar(text: $searchText)
-                    ForEach(enities.filter({ searchText.isEmpty ? true : $0.title.contains(searchText) })) {WebThings in
-                        if(filterSelected != "all"){
-                            if(WebThings.type == filterSelected){
-                        HStack {
-                           VStack(alignment: .leading) {
-                            HStack{
-                                Image(systemName: "placeholder image")
-                                .data(url: URL(string: "\(WebThings.image_link)") ?? placeholder!)
-                                .frame(width:70)
-                                VStack{
-                                   Text("\(WebThings.title)")
-                                    Text("\(WebThings.type)")
-                                        .font(.subheadline)
-                                    HStack{
-                                        Text("Chapter: \(WebThings.chapter)")
-                                        Link("Read",
-                                              destination: URL(string: "\(WebThings.link)") ?? placeholder!)
-                                        UpdatedAdded(assetId:
-                                                        selectedAssetId ?? WebThings.objectID)
-                                       .environment(\.managedObjectContext, self.viewContext)
+                    List{
+                        SearchBar(text: $searchText)
+                        ForEach(enities.filter({ searchText.isEmpty ? true : $0.title.contains(searchText) })) {WebThings in
+                            if(filterSelected != "all"){
+                                if(WebThings.type == filterSelected){
+                                    let currentChapter = ChapterGetter(givenUrl: WebThings.link)
+                                    let x = currentChapter.trimmingCharacters(in: .whitespacesAndNewlines)
+                                    HStack {
+                                        VStack(alignment: .leading) {
+                                            HStack{
+                                                Image(systemName: "placeholder image")
+                                                    .data(url: URL(string: "\(WebThings.image_link)") ?? placeholder!)
+                                                    .frame(width:70)
+                                                VStack{
+                                                    Text("\(WebThings.title)")
+                                                    Text("\(WebThings.type)")
+                                                        .font(.subheadline)
+                                                    HStack{
+                                                        Text("Chapter: \(WebThings.chapter)")
+                                                        Link("Read",
+                                                             destination: URL(string: "\(WebThings.link)") ?? placeholder!)
+                                                        Image(systemName: "circle.fill")
+                                                            .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .gray : .green)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        Spacer()
+                                        VStack{
+                                            Button(action: {
+                                                //pressed = true
+                                                showEditScreen = true
+                                                self.selectedAssetId = WebThings.objectID
+                                                //guard let image = self.selectedAssetId
+                                                
+                                            }, label: {
+                                                Image(systemName: "square.and.pencil")
+                                                    .font(.largeTitle)
+                                                //.imageScale(.large)
+                                            })
+                                                .buttonStyle(BorderlessButtonStyle())
+                                            FavoritesAdded(assetId:
+                                                            selectedAssetId ?? WebThings.objectID)
+                                                .environment(\.managedObjectContext, self.viewContext)
+                                        }
+                                        
                                     }
+                                    .frame(height: 100)
+                                    .sheet(isPresented: $showEditScreen) {
+                                        EditScreenInCode(assetId:
+                                                            selectedAssetId ?? WebThings.objectID)
+                                            .environment(\.managedObjectContext, self.viewContext)
+                                    }
+                                    //k=k+1;
                                 }
                             }
-                           }
-                           Spacer()
-                        VStack{
-                        Button(action: {
-                            //pressed = true
-                            showEditScreen = true
-                            self.selectedAssetId = WebThings.objectID
-                            //guard let image = self.selectedAssetId
-                            
-                        }, label: {
-                            Image(systemName: "square.and.pencil")
-                                .font(.largeTitle)
-                                //.imageScale(.large)
-                        })
-                        .buttonStyle(BorderlessButtonStyle())
-                        FavoritesAdded(assetId:
-                                        selectedAssetId ?? WebThings.objectID)
-                       .environment(\.managedObjectContext, self.viewContext)
-                        }
-                        
-                       }
-                       .frame(height: 100)
-                       .sheet(isPresented: $showEditScreen) {
-                        EditScreenInCode(assetId:
-                                            selectedAssetId ?? WebThings.objectID)
-                           .environment(\.managedObjectContext, self.viewContext)
-                           }
-                        //k=k+1;
-                            }
-                        }
-                        else{
-                            HStack {
-                               VStack(alignment: .leading) {
-                                HStack{
-                                    Image(systemName: "placeholder image")
-                                    .data(url: URL(string: "\(WebThings.image_link)") ?? placeholder!)
-                                    .frame(width:70)
-                                    VStack{
-                                       Text("\(WebThings.title)")
-                                        Text("\(WebThings.type)")
-                                            .font(.subheadline)
+                            else{
+                                let currentChapter = ChapterGetter(givenUrl: WebThings.link)
+                                let x = currentChapter.trimmingCharacters(in: .whitespacesAndNewlines)
+                                HStack {
+                                    VStack(alignment: .leading) {
                                         HStack{
-                                            Text("Chapter: \(WebThings.chapter)")
-                                            Link("Read",
-                                                  destination: URL(string: "\(WebThings.link)") ?? placeholder!)
-                                            UpdatedAdded(assetId:
-                                                            selectedAssetId ?? WebThings.objectID)
-                                           .environment(\.managedObjectContext, self.viewContext)
+                                            Image(systemName: "placeholder image")
+                                                .data(url: URL(string: "\(WebThings.image_link)") ?? placeholder!)
+                                                .frame(width:70)
+                                            VStack{
+                                                Text("\(WebThings.title)")
+                                                Text("\(WebThings.type)")
+                                                    .font(.subheadline)
+                                                HStack{
+                                                    Text("Chapter: \(WebThings.chapter)")
+                                                    Link("Read",
+                                                         destination: URL(string: "\(WebThings.link)") ?? placeholder!)
+                                                    Image(systemName: "circle.fill")
+                                                        .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ?  .gray : .green)
+                                                }
+                                            }
                                         }
                                     }
+                                    Spacer()
+                                    VStack{
+                                        Button(action: {
+                                            //pressed = true
+                                            showEditScreen = true
+                                            self.selectedAssetId = WebThings.objectID
+                                            //guard let image = self.selectedAssetId
+                                            
+                                        }, label: {
+                                            Image(systemName: "square.and.pencil")
+                                                .font(.largeTitle)
+                                            //.imageScale(.large)
+                                        })
+                                            .buttonStyle(BorderlessButtonStyle())
+                                        FavoritesAdded(assetId:
+                                                        selectedAssetId ?? WebThings.objectID)
+                                            .environment(\.managedObjectContext, self.viewContext)
+                                    }
+                                    
                                 }
-                               }
-                               Spacer()
-                            VStack{
-                            Button(action: {
-                                //pressed = true
-                                showEditScreen = true
-                                self.selectedAssetId = WebThings.objectID
-                                //guard let image = self.selectedAssetId
-                                
-                            }, label: {
-                                Image(systemName: "square.and.pencil")
-                                    .font(.largeTitle)
-                                    //.imageScale(.large)
-                            })
-                            .buttonStyle(BorderlessButtonStyle())
-                            FavoritesAdded(assetId:
-                                            selectedAssetId ?? WebThings.objectID)
-                           .environment(\.managedObjectContext, self.viewContext)
+                                .frame(height: 100)
+                                .sheet(isPresented: $showEditScreen) {
+                                    EditScreenInCode(assetId:
+                                                        selectedAssetId ?? WebThings.objectID)
+                                        .environment(\.managedObjectContext, self.viewContext)
+                                }
                             }
-                            
-                           }
-                           .frame(height: 100)
-                           .sheet(isPresented: $showEditScreen) {
-                            EditScreenInCode(assetId:
-                                                selectedAssetId ?? WebThings.objectID)
-                               .environment(\.managedObjectContext, self.viewContext)
-                               }
+                        }//end of for loop
+                        .onDelete { indexSet in
+                            for index in indexSet {
+                                viewContext.delete(enities[index])
+                            }
+                            do {
+                                try viewContext.save()
+                            } catch {
+                                print(error.localizedDescription)
+                            }
                         }
-                       }//end of for loop
-                    .onDelete { indexSet in
-                               for index in indexSet {
-                                   viewContext.delete(enities[index])
-                               }
-                               do {
-                                   try viewContext.save()
-                               } catch {
-                                   print(error.localizedDescription)
-                               }
-                           }
-                }
+                    }
+                    
                     .navigationTitle("List")
                     .navigationBarItems(trailing:
-                            Menu {
-                                        Button("All", action: allSelected)
-                                        Button("Webtoons", action: wtSelected)
-                                        Button("WebNovels", action: wnSelected)
-                                        Button("Manga", action: mSelected)
+                                            Menu {
+                        Button("All", action: allSelected)
+                        Button("Webtoons", action: wtSelected)
+                        Button("WebNovels", action: wnSelected)
+                        Button("Manga", action: mSelected)
                     } label:{
                         Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
-                            //.font(.largeTitle)
+                        //.font(.largeTitle)
                     }
-                                            
+                                        
                     )
-                //Edit screen popup
-//                    .sheet(isPresented: $showEditScreen) {
-//                        EditScreen()
-//                        .environment(\.managedObjectContext, self.viewContext)
-//                        }
                     }
-                
                 HStack{
                     Button(action: {
                         showHomeScreen = true
@@ -457,7 +489,7 @@ struct ContentView: View {
                          showFavScreen = false
                          showListScreen = false
                          showUpdateScreen = false
-                        
+
                     }, label: {
                         Image(systemName: "house")
                             .font(.largeTitle)
@@ -502,9 +534,9 @@ struct ContentView: View {
                         Image(systemName: "list.bullet")
                             .font(.largeTitle)
                     })
-                    
-                    
-                }
+
+
+                }//end of bottom bar
             }
         }
         else if(showAddScreen){
@@ -574,8 +606,6 @@ struct PressActions: ViewModifier {
             )
     }
 }
- 
- 
 extension View {
     func pressAction(onPress: @escaping (() -> Void), onRelease: @escaping (() -> Void)) -> some View {
         modifier(PressActions(onPress: {

@@ -204,7 +204,7 @@ func ChapterGetter(givenUrl: String) -> String {
         let titleSub = html![chapter2find3!..<chapter2find4!]
         let chapterFinal = String(titleSub)
         
-        return String(newHTMlbcofLink!)
+        return chapterFinal
     }
     else{
         return ""

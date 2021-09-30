@@ -27,7 +27,10 @@ struct UpdateScreen: View {
                         List{
                             SearchBar(text: $searchText)
                             ForEach(enities.filter({ searchText.isEmpty ? true : $0.title.contains(searchText) })) {WebThings in
-                                if(WebThings.update){
+                                let currentChapter = ChapterGetter(givenUrl: WebThings.link)
+                                let x = currentChapter.trimmingCharacters(in: .whitespacesAndNewlines)
+                                if(WebThings.chapter.compare(x) != .orderedSame){
+                                    
                                    HStack {
                                        VStack(alignment: .leading) {
                                         HStack{
@@ -42,9 +45,8 @@ struct UpdateScreen: View {
                                                     Text("Chapter: \(WebThings.chapter)")
                                                     Link("Read",
                                                           destination: URL(string: "\(WebThings.link)")!)
-                                                    UpdatedAdded(assetId:
-                                                                    selectedAssetId ?? WebThings.objectID)
-                                                   .environment(\.managedObjectContext, self.viewContext)
+                                                    Image(systemName: "circle.fill")
+                                                        .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .gray : .green)
                                                 }
                                             }
                                         }
