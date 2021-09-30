@@ -423,7 +423,7 @@ struct ContentView: View {
                                                     Link("Read",
                                                          destination: URL(string: "\(WebThings.link)") ?? placeholder!)
                                                     Image(systemName: "circle.fill")
-                                                        .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ?  .gray : .green)
+                                                        .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .gray : .green)
                                                 }
                                             }
                                         }

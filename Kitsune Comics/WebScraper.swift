@@ -25,7 +25,7 @@ func LinkGetter(givenUrl: String) -> String {
         let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
         return givenUrl
     }
-    else if(givenUrl.range(of: "https://1stkissmanga.love/", options: .caseInsensitive) != nil){
+    else if(givenUrl.range(of: "https://1stkissmanga.love/", options: .caseInsensitive) != nil || givenUrl.range(of: "https://1stkissmanga.io/", options: .caseInsensitive) != nil){
         let url = URL(string: givenUrl)!
         let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
         return givenUrl
@@ -106,7 +106,7 @@ func ChapterGetter(givenUrl: String) -> String {
         
         return chapterFinal
     }
-    else if(givenUrl.range(of: "1stkissmanga.love", options: .caseInsensitive) != nil){
+    else if(givenUrl.range(of: "1stkissmanga.love", options: .caseInsensitive) != nil || givenUrl.range(of: "https://1stkissmanga.io/", options: .caseInsensitive) != nil){
         let url = URL(string: givenUrl)!
         let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
         
@@ -266,7 +266,7 @@ func TitleGetter(givenUrl: String) -> String{
         return titleFinal2
         
     }
-    else if(givenUrl.range(of: "https://1stkissmanga.love/", options: .caseInsensitive) != nil){
+    else if(givenUrl.range(of: "https://1stkissmanga.love/", options: .caseInsensitive) != nil || givenUrl.range(of: "https://1stkissmanga.io/", options: .caseInsensitive) != nil){
         let url = URL(string: givenUrl)!
         let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
         
@@ -369,7 +369,7 @@ func ImageGetter(givenUrl: String) -> String{
         
         return imgFinal
     }
-    else if(givenUrl.range(of: "https://1stkissmanga.love/", options: .caseInsensitive) != nil){
+    else if(givenUrl.range(of: "https://1stkissmanga.love/", options: .caseInsensitive) != nil || givenUrl.range(of: "https://1stkissmanga.io/", options: .caseInsensitive) != nil){
         let url = URL(string: givenUrl)!
         let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
         
@@ -450,7 +450,7 @@ func TypeGetter(givenUrl: String) -> String{
         let type = "Webtoon"
         return type
     }
-    else if(givenUrl.range(of: "1stkissmanga.love/", options: .caseInsensitive) != nil){
+    else if(givenUrl.range(of: "1stkissmanga.love/", options: .caseInsensitive) != nil || givenUrl.range(of: "https://1stkissmanga.io/", options: .caseInsensitive) != nil){
         let type = "Webtoon"
         return type
     }
