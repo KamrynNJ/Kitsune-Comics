@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE2003DA270600F30051AAB1 /* StartingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2003D9270600F30051AAB1 /* StartingScreen.swift */; };
+		DE2003E027069DC10051AAB1 /* StartingAddScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2003DF27069DC10051AAB1 /* StartingAddScreen.swift */; };
 		DE7B0AA326F38F200001DD82 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = DE7B0AA226F38F200001DD82 /* SwiftSoup */; };
 		DE8DBB5526E47175000A69C3 /* Kitsune_ComicsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB5426E47175000A69C3 /* Kitsune_ComicsApp.swift */; };
 		DE8DBB5726E47175000A69C3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB5626E47175000A69C3 /* ContentView.swift */; };
@@ -45,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DE2003D9270600F30051AAB1 /* StartingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartingScreen.swift; sourceTree = "<group>"; };
+		DE2003DF27069DC10051AAB1 /* StartingAddScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartingAddScreen.swift; sourceTree = "<group>"; };
 		DE8DBB5126E47175000A69C3 /* Kitsune Comics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kitsune Comics.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE8DBB5426E47175000A69C3 /* Kitsune_ComicsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kitsune_ComicsApp.swift; sourceTree = "<group>"; };
 		DE8DBB5626E47175000A69C3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -126,6 +130,8 @@
 				DE8DBB8C26E4B17E000A69C3 /* FavScreen.swift */,
 				DE8DBB5426E47175000A69C3 /* Kitsune_ComicsApp.swift */,
 				DE8DBB5626E47175000A69C3 /* ContentView.swift */,
+				DE2003D9270600F30051AAB1 /* StartingScreen.swift */,
+				DE2003DF27069DC10051AAB1 /* StartingAddScreen.swift */,
 				DE8DBB9026E5966B000A69C3 /* EditScreen.swift */,
 				DE8DBB8A26E4AE5E000A69C3 /* HomeScreen.swift */,
 				DE8DBB8826E47D6D000A69C3 /* AddEntryScreen.swift */,
@@ -309,8 +315,10 @@
 				DE8DBB8B26E4AE5E000A69C3 /* HomeScreen.swift in Sources */,
 				DE8DBB6126E47177000A69C3 /* Kitsune_Comics.xcdatamodeld in Sources */,
 				DE8DBB8626E478BB000A69C3 /* WebThings+CoreDataClass.swift in Sources */,
+				DE2003E027069DC10051AAB1 /* StartingAddScreen.swift in Sources */,
 				DE8DBB8D26E4B17E000A69C3 /* FavScreen.swift in Sources */,
 				DE8DBB8726E478BB000A69C3 /* WebThings+CoreDataProperties.swift in Sources */,
+				DE2003DA270600F30051AAB1 /* StartingScreen.swift in Sources */,
 				DE8DBB9126E5966B000A69C3 /* EditScreen.swift in Sources */,
 				DE8DBB9526EE5BB7000A69C3 /* WebScraper.swift in Sources */,
 			);

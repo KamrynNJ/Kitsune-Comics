@@ -482,74 +482,8 @@ struct ContentView: View {
                                         
                     )
                     }
-                HStack{
-                    Button(action: {
-                        showHomeScreen = true
-                         showAddScreen = false
-                         showFavScreen = false
-                         showListScreen = false
-                         showUpdateScreen = false
-
-                    }, label: {
-                        Image(systemName: "house")
-                            .font(.largeTitle)
-                    })
-                    Button(action: {
-                        showFavScreen = true
-                        showAddScreen = false
-                        showListScreen = false
-                        showHomeScreen = false
-                        showUpdateScreen = false
-                    }, label: {
-                        Image(systemName: "star")
-                            .font(.largeTitle)
-                    })
-                    Button(action: {
-                        showAddScreen = true
-                        showFavScreen = false
-                        showListScreen = false
-                        showHomeScreen = false
-                        showUpdateScreen = false
-                    }, label: {
-                        Image(systemName: "plus.circle")
-                            .font(.largeTitle)
-                    })
-                    Button(action: {
-                        showUpdateScreen = true
-                        showAddScreen = false
-                        showFavScreen = false
-                        showListScreen = false
-                        showHomeScreen = false
-                    }, label: {
-                        Image(systemName: "square.and.arrow.up")
-                            .font(.largeTitle)
-                    })
-                    Button(action: {
-                        showListScreen = true
-                        showAddScreen = false
-                        showFavScreen = false
-                        showHomeScreen = false
-                        showUpdateScreen = false
-                    }, label: {
-                        Image(systemName: "list.bullet")
-                            .font(.largeTitle)
-                    })
-
-
-                }//end of bottom bar
+            
             }
-        }
-        else if(showAddScreen){
-            AddEntryScreen()
-        }
-        else if(showHomeScreen){
-            HomeScreen()
-        }
-        else if(showUpdateScreen){
-            UpdateScreen()
-        }
-        else if(showFavScreen){
-            FavScreen()
         }
         
     }

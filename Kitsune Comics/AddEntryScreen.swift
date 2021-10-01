@@ -29,7 +29,6 @@ struct AddEntryScreen: View {
     
     
     var body: some View {
-        if(showAddScreen && !showOtherAddScreen){
             VStack{
             NavigationView {
                 Form {
@@ -74,12 +73,6 @@ struct AddEntryScreen: View {
                     }
             }
                 .navigationBarTitle("Add Entry")
-                .navigationBarItems(trailing:
-                  Toggle(isOn: $showOtherAddScreen, label: { Text("") })
-                                        .toggleStyle(.switch)
-                                        //.padding(.top,100)
-                                        
-                )
                 
                 
         }
@@ -88,76 +81,8 @@ struct AddEntryScreen: View {
                     title: Text("Entry Added")
                 )
             }
-            HStack{
-                Button(action: {
-                    showHomeScreen = true
-                    showAddScreen = false
-                    showFavScreen = false
-                    showListScreen = false
-                    showUpdateScreen = false
-                }, label: {
-                    Image(systemName: "house")
-                        .font(.largeTitle)
-                })
-                Button(action: {
-                    showFavScreen = true
-                    showAddScreen = false
-                    showListScreen = false
-                    showHomeScreen = false
-                    showUpdateScreen = false
-                }, label: {
-                    Image(systemName: "star")
-                        .font(.largeTitle)
-                })
-                Button(action: {
-                    showAddScreen = true
-                    showFavScreen = false
-                    showListScreen = false
-                    showHomeScreen = false
-                    showUpdateScreen = false
-                }, label: {
-                    Image(systemName: "plus.circle")
-                        .font(.largeTitle)
-                })
-                Button(action: {
-                    showUpdateScreen = true
-                    showAddScreen = false
-                    showFavScreen = false
-                    showListScreen = false
-                    showHomeScreen = false
-                }, label: {
-                    Image(systemName: "square.and.arrow.up")
-                        .font(.largeTitle)
-                })
-                Button(action: {
-                    showListScreen = true
-                    showAddScreen = false
-                    showFavScreen = false
-                    showHomeScreen = false
-                    showUpdateScreen = false
-                }, label: {
-                    Image(systemName: "list.bullet")
-                        .font(.largeTitle)
-                })
-                
+            
             }
-            }
-    }
-    else if (showListScreen){
-            ContentView()
-        }
-    else if(showHomeScreen){
-        HomeScreen()
-    }
-    else if(showFavScreen){
-        FavScreen()
-    }
-    else if (showUpdateScreen){
-        UpdateScreen()
-    }
-    else if (showAddScreen && showOtherAddScreen){
-        WebScraper()
-    }
 }
 }
 
