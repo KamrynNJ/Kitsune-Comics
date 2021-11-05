@@ -20,63 +20,123 @@ struct FavScreen: View {
     @State var showFavList = false
     @State var selectedAssetId: NSManagedObjectID?
     @State var k=0;
+    let placeholder = URL(string: "https://i.quotev.com/gcbuwion4kwa.jpg")
     var body: some View {
         if (showFavScreen){
-                VStack{
+                //VStack{
                 NavigationView {
                     List{
                         SearchBar(text: $searchText)
                         ForEach(enities.filter({ searchText.isEmpty ? true : $0.title.contains(searchText) })) {WebThings in
                             if(WebThings.favorite){
-                                let currentChapter = ChapterGetter(givenUrl: WebThings.link)
-                                let x = currentChapter.trimmingCharacters(in: .whitespacesAndNewlines)
-                               HStack {
-                                   VStack(alignment: .leading) {
-                                    HStack{
-                                        Image(systemName: "placeholder image")
-                                        .data(url: URL(string: "\(WebThings.image_link)")!)
-                                        .frame(width:70)
+                                    let currentChapter = ChapterGetter(givenUrl: WebThings.link)
+                                    let x = currentChapter.trimmingCharacters(in: .whitespacesAndNewlines)
+                                    ZStack {
+                                        Color.pink
+                                        .cornerRadius(12)
+                                    HStack {
                                         VStack{
-                                           Text("\(WebThings.title)")
-                                            Text("\(WebThings.type)")
-                                                .font(.subheadline)
                                             HStack{
-                                                Text("Chapter: \(WebThings.chapter)")
-                                                Link("Read",
-                                                      destination: URL(string: "\(WebThings.link)")!)
-                                                Image(systemName: "circle.fill")
-                                                    .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .gray : .green)
+                                                Image(systemName: "placeholder image")
+                                                    .data(url: URL(string: "\(WebThings.image_link)") ?? placeholder!)
+                                                    .resizable()
+                                                    .frame(width: 125, height: 200)
+                                                    .cornerRadius(12)
+                                                VStack(alignment: .leading){
+                                                    Text("\(WebThings.type)")
+                                                        .font(.system(size: 15))
+                                                        .fontWeight(.light)
+    //                                                    .padding(.bottom, 15)
+                                                    Text("\(WebThings.title)")
+                                                        .font(.system(size: 25))
+                                                        
+                                                        .fixedSize(horizontal: false, vertical: true)
+                                                        //.padding(.bottom, 55)
+                                                    Spacer()
+                                                    HStack{
+                                                        Text("Chapter: \(WebThings.chapter)")
+                                                            .font(.system(size: 20))
+                                                        Link("Read",
+                                                             destination: URL(string: "\(WebThings.link)") ?? placeholder!)
+//                                                        Image(systemName: "circle.fill")
+//                                                            .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .gray : .green)
+                                                        FavoritesAdded(assetId:
+                                                                        selectedAssetId ?? WebThings.objectID)
+                                                            .environment(\.managedObjectContext, self.viewContext)
+                                                        
+                                                    }
+                                                }
                                             }
                                         }
+                                        if #available(iOS 15.0, *) {
+                                            Spacer()
+                                            
+                                                .swipeActions(edge: .leading, content: {
+                                                    Button(action: {
+                                                        showEditScreen = true
+                                                        self.selectedAssetId = WebThings.objectID
+                                                        
+                                                    }, label: {
+                                                        Image(systemName: "square.and.pencil")
+                                                            .font(.largeTitle)
+                                                        //.imageScale(.large)
+                                                    })
+                                                        .tint(.blue)
+                                                })
+                                                .swipeActions(edge: .trailing) {
+                                                                Button(role: .destructive) {
+                                                                    //action
+                                                                    viewContext.delete(WebThings)
+                                                                    do {
+                                                                        try viewContext.save()
+                                                                    } catch {
+                                                                        print(error.localizedDescription)
+                                                                    }
+                                                                } label: {
+                                                                    Label("Delete", systemImage: "trash")
+                                                                }
+                                                }
+                                        } else {
+                                            // Fallback on earlier versions
+                                            VStack{
+                                               Button(action: {
+                                                   showEditScreen = true
+                                                   self.selectedAssetId = WebThings.objectID
+   
+                                               }, label: {
+                                                   Image(systemName: "square.and.pencil")
+                                                       .font(.largeTitle)
+                                                   //.imageScale(.large)
+                                               })
+                                                   .buttonStyle(BorderlessButtonStyle())
+                                            }
+                                        }
+                                        
                                     }
-                                   }
-                                   Spacer()
-                                VStack{
-                                Button(action: {
-                                    showEditScreen = true
-                                    self.selectedAssetId = WebThings.objectID
-                                    //guard let image = self.selectedAssetId
-    
-                                }, label: {
-                                    Image(systemName: "square.and.pencil")
-                                        .font(.largeTitle)
-                                        //.imageScale(.large)
-                                })
-                                .buttonStyle(BorderlessButtonStyle())
-                                FavoritesAdded(assetId:
-                                                selectedAssetId ?? WebThings.objectID)
-                               .environment(\.managedObjectContext, self.viewContext)
+                                    .padding()
+                                    HStack{
+                                        VStack{
+                                            ZStack{
+                                            Image(systemName: "circle.fill")
+                                                .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .clear : .green)
+                                                .font(.largeTitle)
+                                                Text("UP")
+                                                    .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .clear : .white)
+                                            }
+                                            Spacer()
+                                        }
+                                            Spacer()
+                                    }
+                                    }
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                                    .sheet(isPresented: $showEditScreen) {
+                                        EditScreenInCode(assetId:
+                                                            selectedAssetId ?? WebThings.objectID)
+                                            .environment(\.managedObjectContext, self.viewContext)
+                                    }
                                 }
-                                
-                               }
-                               .frame(height: 100)
-                               .sheet(isPresented: $showEditScreen) {
-                                EditScreenInCode(assetId:
-                                                    selectedAssetId ?? WebThings.objectID)
-                                   .environment(\.managedObjectContext, self.viewContext)
-                                   }
                             }
-                           }//end of for loop
                         .onDelete { indexSet in
                                    for index in indexSet {
                                        viewContext.delete(enities[index])
@@ -88,9 +148,10 @@ struct FavScreen: View {
                                    }
                                }
                     }
+                        .listStyle(PlainListStyle())
                         .navigationTitle("Favorites")
                         }
-                }
+                //}
             }
             
         }

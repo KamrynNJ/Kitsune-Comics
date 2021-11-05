@@ -106,6 +106,31 @@ func ChapterGetter(givenUrl: String) -> String {
         
         return chapterFinal
     }
+    else if(givenUrl.range(of: "https://bato.to/series", options: .caseInsensitive) != nil){
+        let url = URL(string: givenUrl)!
+        let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
+        
+        let chapterBegin = html?.distance(of: "visited chapt") ?? 0
+        let chapter2find1 = html?.index(html!.startIndex, offsetBy: chapterBegin)
+        let newHTMlbcofLink = html?[chapter2find1!..<html!.endIndex]
+        
+        let chapterBegin2 = newHTMlbcofLink?.distance(of: "<b>") ?? 0
+        let chapter2find2 = newHTMlbcofLink?.index(newHTMlbcofLink!.startIndex, offsetBy: chapterBegin2)
+        let newHTMlbcofLink2 = newHTMlbcofLink?[chapter2find2!..<newHTMlbcofLink!.endIndex]
+        
+        let chapterBegin3 = newHTMlbcofLink2?.distance(of: "Chapter") ?? 0
+        let chapter2find3 = newHTMlbcofLink2?.index(newHTMlbcofLink2!.startIndex, offsetBy: chapterBegin3+8)
+        let newHTMlbcofLink3 = newHTMlbcofLink2?[chapter2find3!..<newHTMlbcofLink2!.endIndex]
+        
+        let chapterBegin4 = newHTMlbcofLink3?.distance(of: "</b>") ?? 0
+        let chapter2find4 = newHTMlbcofLink3?.index(newHTMlbcofLink3!.startIndex, offsetBy: chapterBegin4)
+        let newHTMlbcofLink4 = newHTMlbcofLink3?[chapter2find4!..<newHTMlbcofLink3!.endIndex]
+        
+        let titleSub = html![chapter2find3!..<chapter2find4!]
+        let chapterFinal = String(titleSub)
+        
+        return chapterFinal
+    }
     else if(givenUrl.range(of: "1stkissmanga.love", options: .caseInsensitive) != nil || givenUrl.range(of: "https://1stkissmanga.io/", options: .caseInsensitive) != nil){
         let url = URL(string: givenUrl)!
         let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))

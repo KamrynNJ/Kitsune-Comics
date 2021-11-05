@@ -335,6 +335,7 @@ struct ContentView: View {
     @State var showUpdateScreen = false
     @State var showEditScreen = false
     @State var searchText = ""
+    @State var action = ""
     @State var pressed = false
     @State var saveUpdate = false
     @State var showFavList = false
@@ -347,108 +348,266 @@ struct ContentView: View {
     
     var body: some View {
         if (showListScreen){
-            VStack{
+            //VStack{
             NavigationView {
-                    List{
+                List{
                         SearchBar(text: $searchText)
-                        ForEach(enities.filter({ searchText.isEmpty ? true : $0.title.contains(searchText) })) {WebThings in
+                    ForEach(enities.filter({ searchText.isEmpty ? true : $0.title.contains(searchText) })) {WebThings in
                             if(filterSelected != "all"){
                                 if(WebThings.type == filterSelected){
                                     let currentChapter = ChapterGetter(givenUrl: WebThings.link)
                                     let x = currentChapter.trimmingCharacters(in: .whitespacesAndNewlines)
+                                    ZStack {
+                                        Color.pink
+                                        .cornerRadius(12)
                                     HStack {
-                                        VStack(alignment: .leading) {
+                                        VStack{
                                             HStack{
                                                 Image(systemName: "placeholder image")
                                                     .data(url: URL(string: "\(WebThings.image_link)") ?? placeholder!)
-                                                    .frame(width:70)
-                                                VStack{
-                                                    Text("\(WebThings.title)")
+                                                    .resizable()
+                                                    .frame(width: 125, height: 200)
+                                                    .cornerRadius(12)
+                                                VStack(alignment: .leading){
                                                     Text("\(WebThings.type)")
-                                                        .font(.subheadline)
+                                                        .font(.system(size: 15))
+                                                        .fontWeight(.light)
+    //                                                    .padding(.bottom, 15)
+                                                    Text("\(WebThings.title)")
+                                                        .font(.system(size: 25))
+                                                        
+                                                        .fixedSize(horizontal: false, vertical: true)
+                                                        //.padding(.bottom, 55)
+                                                    Spacer()
                                                     HStack{
                                                         Text("Chapter: \(WebThings.chapter)")
+                                                            .font(.system(size: 20))
                                                         Link("Read",
                                                              destination: URL(string: "\(WebThings.link)") ?? placeholder!)
-                                                        Image(systemName: "circle.fill")
-                                                            .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .gray : .green)
+//                                                        Image(systemName: "circle.fill")
+//                                                            .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .gray : .green)
+                                                        FavoritesAdded(assetId:
+                                                                        selectedAssetId ?? WebThings.objectID)
+                                                            .environment(\.managedObjectContext, self.viewContext)
+                                                        
                                                     }
                                                 }
                                             }
                                         }
-                                        Spacer()
-                                        VStack{
-                                            Button(action: {
-                                                //pressed = true
-                                                showEditScreen = true
-                                                self.selectedAssetId = WebThings.objectID
-                                                //guard let image = self.selectedAssetId
-                                                
-                                            }, label: {
-                                                Image(systemName: "square.and.pencil")
-                                                    .font(.largeTitle)
-                                                //.imageScale(.large)
-                                            })
-                                                .buttonStyle(BorderlessButtonStyle())
-                                            FavoritesAdded(assetId:
-                                                            selectedAssetId ?? WebThings.objectID)
-                                                .environment(\.managedObjectContext, self.viewContext)
+                                        if #available(iOS 15.0, *) {
+                                            Spacer()
+                                            
+                                                .swipeActions(edge: .leading, content: {
+                                                    Button(action: {
+                                                        showEditScreen = true
+                                                        self.selectedAssetId = WebThings.objectID
+                                                        
+                                                    }, label: {
+                                                        Image(systemName: "square.and.pencil")
+                                                            .font(.largeTitle)
+                                                        //.imageScale(.large)
+                                                    })
+                                                        .tint(.blue)
+                                                })
+                                                .swipeActions(edge: .trailing) {
+                                                                Button(role: .destructive) {
+                                                                    //action
+                                                                    viewContext.delete(WebThings)
+                                                                    do {
+                                                                        try viewContext.save()
+                                                                    } catch {
+                                                                        print(error.localizedDescription)
+                                                                    }
+                                                                } label: {
+                                                                    Label("Delete", systemImage: "trash")
+                                                                }
+                                                }
+                                        } else {
+                                            // Fallback on earlier versions
+                                            VStack{
+                                               Button(action: {
+                                                   showEditScreen = true
+                                                   self.selectedAssetId = WebThings.objectID
+   
+                                               }, label: {
+                                                   Image(systemName: "square.and.pencil")
+                                                       .font(.largeTitle)
+                                                   //.imageScale(.large)
+                                               })
+                                                   .buttonStyle(BorderlessButtonStyle())
+                                            }
                                         }
                                         
                                     }
-                                    .frame(height: 100)
+                                    .padding()
+                                    HStack{
+                                        VStack{
+                                            ZStack{
+                                            Image(systemName: "circle.fill")
+                                                .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .clear : .green)
+                                                .font(.largeTitle)
+                                                Text("UP")
+                                                    .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .clear : .white)
+                                            }
+                                            Spacer()
+                                        }
+                                            Spacer()
+                                    }
+                                    }
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                                     .sheet(isPresented: $showEditScreen) {
                                         EditScreenInCode(assetId:
                                                             selectedAssetId ?? WebThings.objectID)
                                             .environment(\.managedObjectContext, self.viewContext)
                                     }
-                                    //k=k+1;
                                 }
                             }
                             else{
                                 let currentChapter = ChapterGetter(givenUrl: WebThings.link)
                                 let x = currentChapter.trimmingCharacters(in: .whitespacesAndNewlines)
+                                ZStack {
+                                    Color.pink
+                                    .cornerRadius(12)
                                 HStack {
-                                    VStack(alignment: .leading) {
+                                    VStack{
                                         HStack{
                                             Image(systemName: "placeholder image")
                                                 .data(url: URL(string: "\(WebThings.image_link)") ?? placeholder!)
-                                                .frame(width:70)
-                                            VStack{
+                                                .resizable()
+                                                .frame(width: 125, height: 200)
+                                                .cornerRadius(12)
+                                            VStack(alignment: .leading){
+                                                HStack{
+                                                    Text("\(WebThings.type)")
+                                                        .font(.system(size: 15))
+                                                        .fontWeight(.light)
+    //                                                    .padding(.bottom, 15)
+                                                    
+//Menu for edit and favorites
+                                                    
+//                                                    Menu("Options") {
+//                                                        Button("Edit", action: {
+//                                                            showEditScreen = true
+//                                                            self.selectedAssetId = WebThings.objectID
+//                                                        })
+//                                                       Button("Favorite", action: {
+//                                                           if !(WebThings.favorite){
+//                                                               WebThings.favorite = true
+//                                                               showFavScreen = true
+//
+//                                                           }
+//                                                           else{
+//                                                               WebThings.favorite = false
+//                                                               showFavScreen = false
+//                                                           }
+//                                                           do{
+//                                                               try viewContext.save()
+//                                                           }
+//                                                           catch {
+//                                                               print(error.localizedDescription)
+//                                                           }
+//                                                       })
+//                                                    }
+                                                }
                                                 Text("\(WebThings.title)")
-                                                Text("\(WebThings.type)")
-                                                    .font(.subheadline)
+                                                    .font(.system(size: 25))
+                                                    
+                                                    .fixedSize(horizontal: false, vertical: true)
+                                                    //.padding(.bottom, 55)
+                                                Spacer()
                                                 HStack{
                                                     Text("Chapter: \(WebThings.chapter)")
+                                                        .font(.system(size: 20))
                                                     Link("Read",
                                                          destination: URL(string: "\(WebThings.link)") ?? placeholder!)
-                                                    Image(systemName: "circle.fill")
-                                                        .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .gray : .green)
+//                                                    Image(systemName: "circle.fill")
+//                                                        .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .gray : .green)
+                                                    FavoritesAdded(assetId:
+                                                                    selectedAssetId ?? WebThings.objectID)
+                                                        .environment(\.managedObjectContext, self.viewContext)
                                                 }
                                             }
                                         }
                                     }
-                                    Spacer()
-                                    VStack{
-                                        Button(action: {
-                                            //pressed = true
-                                            showEditScreen = true
-                                            self.selectedAssetId = WebThings.objectID
-                                            //guard let image = self.selectedAssetId
-                                            
-                                        }, label: {
-                                            Image(systemName: "square.and.pencil")
-                                                .font(.largeTitle)
-                                            //.imageScale(.large)
-                                        })
-                                            .buttonStyle(BorderlessButtonStyle())
-                                        FavoritesAdded(assetId:
-                                                        selectedAssetId ?? WebThings.objectID)
-                                            .environment(\.managedObjectContext, self.viewContext)
+                                    if #available(iOS 15.0, *) {
+                                        Spacer()
+                                        
+                                            .swipeActions(edge: .leading, content: {
+                                                Button(action: {
+                                                    showEditScreen = true
+                                                    self.selectedAssetId = WebThings.objectID
+                                                    //print("chapter")
+                                                    print(currentChapter)
+                                                }, label: {
+                                                    Image(systemName: "square.and.pencil")
+                                                        .font(.largeTitle)
+                                                    //.imageScale(.large)
+                                                })
+                                                    .tint(.blue)
+                                            })
+                                            .swipeActions(edge: .trailing) {
+                                                            Button(role: .destructive) {
+                                                                //action
+                                                                viewContext.delete(WebThings)
+                                                                do {
+                                                                    try viewContext.save()
+                                                                } catch {
+                                                                    print(error.localizedDescription)
+                                                                }
+                                                            } label: {
+                                                                Label("Delete", systemImage: "trash")
+                                                            }
+                                            }
+                                    } else {
+                                        // Fallback on earlier versions
+                                        VStack{
+                                           Button(action: {
+                                               showEditScreen = true
+                                               self.selectedAssetId = WebThings.objectID
+
+                                           }, label: {
+                                               Image(systemName: "square.and.pencil")
+                                                   .font(.largeTitle)
+                                               //.imageScale(.large)
+                                           })
+                                               .buttonStyle(BorderlessButtonStyle())
+                                        }
                                     }
+                                    //VStack{
+//                                        Button(action: {
+//                                            showEditScreen = true
+//                                            self.selectedAssetId = WebThings.objectID
+//
+//                                        }, label: {
+//                                            Image(systemName: "square.and.pencil")
+//                                                .font(.largeTitle)
+//                                            //.imageScale(.large)
+//                                        })
+                                           // .buttonStyle(BorderlessButtonStyle())
+//                                        FavoritesAdded(assetId:
+//                                                        selectedAssetId ?? WebThings.objectID)
+//                                            .environment(\.managedObjectContext, self.viewContext)
+                                    //}
                                     
                                 }
-                                .frame(height: 100)
+                                .padding()
+                                    HStack{
+                                    VStack{
+                                        ZStack{
+                                        Image(systemName: "circle.fill")
+                                            .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .clear : .green)
+                                            .font(.largeTitle)
+                                            Text("UP")
+                                                .foregroundColor((WebThings.chapter.compare(x) == .orderedSame) ? .clear : .white)
+                                        }
+                                        Spacer()
+                                    }
+                                        Spacer()
+                                    }
+                                }
+                                .fixedSize(horizontal: false, vertical: true)
+                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
                                 .sheet(isPresented: $showEditScreen) {
                                     EditScreenInCode(assetId:
                                                         selectedAssetId ?? WebThings.objectID)
@@ -467,7 +626,7 @@ struct ContentView: View {
                             }
                         }
                     }
-                    
+                    .listStyle(PlainListStyle())
                     .navigationTitle("List")
                     .navigationBarItems(trailing:
                                             Menu {
@@ -481,9 +640,8 @@ struct ContentView: View {
                     }
                                         
                     )
-                    }
-            
-            }
+                }
+            //}
         }
         
     }

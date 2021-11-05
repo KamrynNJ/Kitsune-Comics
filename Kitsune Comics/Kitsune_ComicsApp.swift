@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct Kitsune_ComicsApp: App {
     let persistenceController = PersistenceController.shared
-    @StateObject var viewRouter = ViewRouter()
+    
     var body: some Scene {
         WindowGroup {
             StartingScreen()
