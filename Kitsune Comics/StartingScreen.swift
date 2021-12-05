@@ -10,7 +10,7 @@ import SwiftUI
 struct StartingScreen: View {
     var body: some View {
         TabView {
-            HomeScreen()
+            UpdateScreen()
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
@@ -25,14 +25,14 @@ struct StartingScreen: View {
                     Label("Add", systemImage: "plus.circle")
                 }
                 .tag(3)
-            UpdateScreen()
-                .tabItem {
-                    Label("Update", systemImage: "square.and.arrow.up")
-                }
-                .tag(4)
             ContentView()
                 .tabItem {
                     Label("List", systemImage: "list.dash")
+                }
+                .tag(4)
+            SettingsScreen()
+                .tabItem {
+                    Label("Settings", systemImage: "gear.circle")
                 }
                 .tag(5)
         }

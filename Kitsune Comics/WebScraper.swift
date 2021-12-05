@@ -394,7 +394,7 @@ func ImageGetter(givenUrl: String) -> String{
         
         return imgFinal
     }
-    else if(givenUrl.range(of: "https://1stkissmanga.love/", options: .caseInsensitive) != nil || givenUrl.range(of: "https://1stkissmanga.io/", options: .caseInsensitive) != nil){
+    else if(givenUrl.range(of: "https://1stkissmanga.love/", options: .caseInsensitive) != nil ){
         let url = URL(string: givenUrl)!
         let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
         
@@ -408,6 +408,27 @@ func ImageGetter(givenUrl: String) -> String{
         
         let imgBegin3 = newHTMlbcofLink2?.distance(of: " ") ?? 0
         let img2find3 = newHTMlbcofLink2?.index(newHTMlbcofLink2!.startIndex, offsetBy: imgBegin3)
+        let newHTMlbcofLink3 = newHTMlbcofLink2?[img2find3!..<newHTMlbcofLink2!.endIndex]
+        
+        let imgSub = html![img2find2!..<img2find3!]
+        let imgFinal = String(imgSub)
+        
+        return imgFinal
+    }
+    else if(givenUrl.range(of: "https://1stkissmanga.io/", options: .caseInsensitive) != nil){
+        let url = URL(string: givenUrl)!
+        let html = (try? String(contentsOf: url, encoding: String.Encoding.ascii))
+        
+        let imgBegin = html?.distance(of: "summary_image") ?? 0
+        let img2find1 = html?.index(html!.startIndex, offsetBy: imgBegin)
+        let newHTMlbcofLink = html?[img2find1!..<html!.endIndex]
+        
+        let imgBegin2 = newHTMlbcofLink?.distance(of: "data-lazy-src=\"") ?? 0
+        let img2find2 = newHTMlbcofLink?.index(newHTMlbcofLink!.startIndex, offsetBy: imgBegin2+15)
+        let newHTMlbcofLink2 = newHTMlbcofLink?[img2find2!..<newHTMlbcofLink!.endIndex]
+        
+        let imgBegin3 = newHTMlbcofLink2?.distance(of: " ") ?? 0
+        let img2find3 = newHTMlbcofLink2?.index(newHTMlbcofLink2!.startIndex, offsetBy: imgBegin3-1)
         let newHTMlbcofLink3 = newHTMlbcofLink2?[img2find3!..<newHTMlbcofLink2!.endIndex]
         
         let imgSub = html![img2find2!..<img2find3!]

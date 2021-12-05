@@ -179,7 +179,7 @@ struct OtherAddScreen: View {
             ContentView()
         }
     else if(showHomeScreen){
-        HomeScreen()
+        SettingsScreen()
     }
     else if(showFavScreen){
         FavScreen()

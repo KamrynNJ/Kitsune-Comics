@@ -21,7 +21,7 @@
 		DE8DBB8626E478BB000A69C3 /* WebThings+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8426E478BB000A69C3 /* WebThings+CoreDataClass.swift */; };
 		DE8DBB8726E478BB000A69C3 /* WebThings+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8526E478BB000A69C3 /* WebThings+CoreDataProperties.swift */; };
 		DE8DBB8926E47D6D000A69C3 /* AddEntryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8826E47D6D000A69C3 /* AddEntryScreen.swift */; };
-		DE8DBB8B26E4AE5E000A69C3 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8A26E4AE5E000A69C3 /* HomeScreen.swift */; };
+		DE8DBB8B26E4AE5E000A69C3 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8A26E4AE5E000A69C3 /* SettingsScreen.swift */; };
 		DE8DBB8D26E4B17E000A69C3 /* FavScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8C26E4B17E000A69C3 /* FavScreen.swift */; };
 		DE8DBB8F26E4B1C6000A69C3 /* UpdateScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB8E26E4B1C6000A69C3 /* UpdateScreen.swift */; };
 		DE8DBB9126E5966B000A69C3 /* EditScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8DBB9026E5966B000A69C3 /* EditScreen.swift */; };
@@ -66,7 +66,7 @@
 		DE8DBB8426E478BB000A69C3 /* WebThings+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebThings+CoreDataClass.swift"; sourceTree = "<group>"; };
 		DE8DBB8526E478BB000A69C3 /* WebThings+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebThings+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DE8DBB8826E47D6D000A69C3 /* AddEntryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEntryScreen.swift; sourceTree = "<group>"; };
-		DE8DBB8A26E4AE5E000A69C3 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
+		DE8DBB8A26E4AE5E000A69C3 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		DE8DBB8C26E4B17E000A69C3 /* FavScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavScreen.swift; sourceTree = "<group>"; };
 		DE8DBB8E26E4B1C6000A69C3 /* UpdateScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateScreen.swift; sourceTree = "<group>"; };
 		DE8DBB9026E5966B000A69C3 /* EditScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditScreen.swift; sourceTree = "<group>"; };
@@ -133,7 +133,7 @@
 				DE2003D9270600F30051AAB1 /* StartingScreen.swift */,
 				DE2003DF27069DC10051AAB1 /* StartingAddScreen.swift */,
 				DE8DBB9026E5966B000A69C3 /* EditScreen.swift */,
-				DE8DBB8A26E4AE5E000A69C3 /* HomeScreen.swift */,
+				DE8DBB8A26E4AE5E000A69C3 /* SettingsScreen.swift */,
 				DE8DBB8826E47D6D000A69C3 /* AddEntryScreen.swift */,
 				DE8DBB9226ED3C06000A69C3 /* OtherAddScreen.swift */,
 				DE8DBB5826E47177000A69C3 /* Assets.xcassets */,
@@ -312,7 +312,7 @@
 				DE8DBB5726E47175000A69C3 /* ContentView.swift in Sources */,
 				DE8DBB8926E47D6D000A69C3 /* AddEntryScreen.swift in Sources */,
 				DE8DBB5526E47175000A69C3 /* Kitsune_ComicsApp.swift in Sources */,
-				DE8DBB8B26E4AE5E000A69C3 /* HomeScreen.swift in Sources */,
+				DE8DBB8B26E4AE5E000A69C3 /* SettingsScreen.swift in Sources */,
 				DE8DBB6126E47177000A69C3 /* Kitsune_Comics.xcdatamodeld in Sources */,
 				DE8DBB8626E478BB000A69C3 /* WebThings+CoreDataClass.swift in Sources */,
 				DE2003E027069DC10051AAB1 /* StartingAddScreen.swift in Sources */,
